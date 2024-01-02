@@ -83,8 +83,10 @@ As noted in the Introduction, the goal of this paper is to study sample size rec
 
 The main factor of interest for the simulation described below was the sample sizes used for the 5-fold cross validation procedure. Because two other factors were manipulated (number of predictors and degree of multicollinearity), comparison of prediction quality for different sample sizes needed to be made for fixed levels of the other factors. Sample sizes were chosen according to several proposed RoT, each of which had a different way of incorporating the number of predictors into their recommendations for $n$. The RoT considered are shown in the table below in @tbl-mlr-rot. Note that several of the justifications for these rules involve minimizing shrinkage (also called cross-validity shrinkage), $\epsilon$, as defined in @sec-pred-based-recs.
 
+<!-- NOTE: find justification for other rules -->
+
 | General rule: $n \ge g(p)$ | $n_{\text{train}}$ (e.g. with $p = 5$) | Justification for the rule                                                                                                                                                                                                                                                                                                | Citation                        |
-|:--------------|:--------------|:----------------------------|:--------------|
+|:---------------|:---------------|:------------------------|:---------------|
 | $10p$                      | 50                                     | Informal survey of faculty about rules of thumb they consider for sizing MLR studies.                                                                                                                                                                                                                                     | Origin of this rule is unclear. |
 | $15p$                      | 75                                     | Based on Park and Dudycha’s (1974) tables, it was found that generally about 15 subjects per predictor provides reliable regression equations for prediction. This was found under the assumption of the squared population multiple correlation $\rho^2 = 0.5$, which is a reasonable guess for social science research. | @stevens2001                    |
 | $8p + 50$                  | 90                                     | Provides power of approximately 80% or more for tests of a multiple correlation with a medium effect size, which can be defined as Cohen’s $f^2 = R^2 / (1 - R^2) = 0.15$ or equivalently $R^2 = 0.13$ (note that @cohen2013 suggested these values in the context of behavioral sciences).                               | @green1991                      |
@@ -92,9 +94,11 @@ The main factor of interest for the simulation described below was the sample si
 
 : Rules of thumb for multiple regression {#tbl-mlr-rot}
 
-The number of total predictors was set at 3, 5 and 7 (note that the set of $n$ were chosen to cover the entire range of sample size recommendations based on the selected RoT for the largest number of predictors $p = 7$). The degree of linear association between these sets of predictors were set at independent, low, medium-low and medium levels. Without loss of generality, correlation matrices were used when specifying the variance-covariance parameter $\Sigma_X$ of the multivariate normal distribution used to generate the design matrix. This means all the diagonal terms of $\Sigma_X$ were always set to one (i.e. a unit variance of one) and all off-diagonal values represent pairwise correlation coefficients between $X_i$ and $X_j$ ($i \ne j$). Additionally, all correlation coefficients $\rho$ were assumed to be non-negative for simplicity (i.e. $0 \le \rho \le 1$). When all predictors were independent, off diagonal correlation coefficients were set to zero. Low correlation coefficients were defined as being in the interval $[0, 0,2]$. Medium-low correlation coefficients were defined as being in the interval $[0.2, 0.4]$. Medium correlation coefficients were defined as being in the interval $[0.4, 0.6]$. Specific values for the off-diagonal terms were randomly generated from a uniform distribution with bounds corresponding to that of the respective multicollinearity level. High correlation coefficients (i.e. $\rho > 0.6$) were excluded to avoid extreme multicollinearity. In total, all possible combinations of the sample sizes, number of predictors and degree of multicollinearity defined a set of 132 unique validation scenarios ($(n \times p \times \rho_{XX}) = (11 \times 3 \times 4) = 132$).
+The number of total predictors $p$ was set at 3, 6 and 9 (note that the set of $n$ were chosen to cover the entire range of sample size recommendations based on the selected RoT for the largest number of predictors $p = 7$). Only $q$ of which will be active predictors; the remaining $p-q$ predictors are noise variables (for $p = 3$: $q = 1, 2, 3$; for $p = 6$: $q = 2, 4, 6$ for $p = 9$: $q = 3, 6, 9$). The degree of linear association between these sets of predictors were set at independent, low, medium-low and medium levels. Without loss of generality, correlation matrices were used when specifying the variance-covariance parameter $\Sigma_X$ of the multivariate normal distribution used to generate the design matrix. This means all the diagonal terms of $\Sigma_X$ were always set to one (i.e. a unit variance of one) and all off-diagonal values represent pairwise correlation coefficients between $X_i$ and $X_j$ ($i \ne j$). Additionally, all correlation coefficients $\rho$ were assumed to be non-negative for simplicity (i.e. $0 \le \rho \le 1$). When all predictors were independent, off diagonal correlation coefficients were set to zero. Low correlation coefficients were defined as being in the interval $(0, 0,2]$. Medium-low correlation coefficients were defined as being in the interval $[0.2, 0.4]$. Medium correlation coefficients were defined as being in the interval $[0.4, 0.6]$. Specific values for the off-diagonal terms were randomly generated from a uniform distribution with bounds corresponding to that of the respective multicollinearity level. High correlation coefficients (i.e. $\rho > 0.6$) were excluded to avoid extreme multicollinearity. In total, all possible combinations of the sample sizes, number of predictors and degree of multicollinearity defined a set of 132 unique validation scenarios ($(n \times p \times     q \times \rho_{XX}) = (11 \times 3 \times 3 \times 4) = 396$).
 
-For a general scenario with $p$ predictors, some level of multicollinearity and $n$ observations, the first step in generating the sample data was to construct a proper / usable correlation matrix. In order to be proper, a correlation matrix $\rho_{XX}$ must be symmetric and positive definite. Values for the simple correlation coefficients were randomly sampled from a uniform distribution with bounds based on the multicollinearity level (and filled in so that the matrix was symmetric). Sets of values continued to be randomly sampled and checked until a proper correlation matrix was obtained. Then the $n$ rows of the design matrix were generated by sampling $(X_1, \ldots, X_p)$ from a $\text{MVN}_p(\mu_X, \rho_{XX})$ where $\mu_X$ is the mean vector of the $p$ predictor variables. This leads to $Y \mid (X_1, \ldots, X_p) \sim \text{N}(\mu_{Y \mid X}, \sigma^2)$, where $\mu_{Y \mid X} = \beta_1 X_1 + \cdots + \beta_p X_p$. Several simplifying assumptions were made during the data generation process. $\mu_X$ was assumed to be a zero vector, $\mu_{Y \mid X}$ did not include an intercept term $\beta_0$, each each population regression coefficient $\beta_i$, $i = 1, \ldots, p$, was randomly generated from a uniform distribution with arbitrarily selected bounds $[-4, 4]$, and lastly the amount of error variation in the response was held constant at an arbitrarily chosen value $\sigma^2 = 100$. All of this can be summarized with the following population model:
+- NOTE: mention different $q$ for each $p$.
+
+For a general scenario with $q$ active predictors, $p-q$ inactive predictors, some level of multicollinearity and $n$ observations, the first step in generating the sample data was to construct a proper / usable correlation matrix (i.e. symmetric and positive definite). Values for the simple correlation coefficients were randomly sampled from a uniform distribution with bounds based on the multicollinearity level and filled in so that the matrix was symmetric. Then the $n$ rows of the design matrix were generated by sampling $(X_1, \ldots, X_p)$ from a $\text{MVN}_p(\mu_X, \rho_{XX})$ where $\mu_X$ is the mean vector of the $p$ predictor variables. This leads to $Y \mid (X_1, \ldots, X_p) \sim \text{N}(\mu_{Y \mid X}, \sigma^2)$, where $\mu_{Y \mid X} = \beta_1 X_1 + \cdots + \beta_p X_p$. Several simplifying assumptions were made during the data generation process. $\mu_X$ was assumed to be a zero vector, $\mu_{Y \mid X}$ did not include an intercept term $\beta_0$, each each population regression coefficient $\beta_i$, $i = 1, \ldots, p$, was randomly generated from a uniform distribution with arbitrarily selected bounds $[-4, 4]$, and lastly the amount of error variation in the response was held constant at an arbitrarily chosen value $\sigma^2 = 100$. All of this can be summarized with the following population model:
 
 $$Y_i = \beta_1 X_1 + \cdots + \beta_p X_p + \epsilon_i$$ {#eq-pop-model}
 
@@ -116,31 +120,31 @@ Below are the steps used to conduct the Monte Carlo simulation within R; this ou
 
 Step 1) Get sample of data.
 
-a. For a particular number of predictors $p$, level of multicollinearity, and sample size $n$, generate the correlation matrix and check it for usability.
+a.  For a particular number of predictors $p$ and level of multicollinearity, generate the correlation matrix.
 
-b. Once a proper matrix is obtained, simulate $n$ observations for $X$ utilizing $\rho_{XX}$.
+b.  Once a proper matrix is obtained, simulate $n$ observations for $X$ utilizing $\rho_{XX}$.
 
-c. Then randomly set the population regression coefficients and simulate the response variable $Y$ for each of the $n$ observations according to the population model in @eq-pop-model.
+c. Set coefficients for $q$ active predictors to a constant, arbitrarily chosen value of $\beta_i = 0.2, \hspace{10pt} i = 1, \dots, q$ and non active predictor coefficients to zero $\beta_i = 0, \hspace{10pt} i = q + 1, \dots, p$. Then simulate the response variable $Y$ for each of the $n$ observations according to the population model in @eq-pop-model.
 
-- Note that all the above tasks for step 1 should be carried out following the descriptions in @sec-sim-conditions. 
+-   Note that all the above tasks for step 1 should be carried out following the descriptions in @sec-sim-conditions.
 
 Step 2) Perform 5-fold cross validation.
 
-a. Partition sample data from step 1 into 5 groups (aka folds).
+a.  Partition sample data from step 1 into 5 groups (aka folds).
 
-b. Fit a sample MLR model using only data from four of the folds (e.g. folds 1 - 4). 
+b.  Fit a sample MLR model using only data from four of the folds (e.g. folds 1 - 4).
 
-c. Using the regression equation from the above model, obtain the predicted values for observations in the fold that was held out (in this example, fold 5).
+c.  Using the regression equation from the above model, obtain the predicted values for observations in the fold that was held out (in this example, fold 5).
 
-d. Calculate the two accuracy measures described in @sec-preds-evals, @eq-rmse and @eq-oos-r2.
+d.  Calculate the two accuracy measures described in @sec-preds-evals, @eq-rmse and @eq-oos-r2.
 
-e. Repeat steps b - d until each fold has been used as the testing set exactly once. 
+e.  Repeat steps b - d until each fold has been used as the testing set exactly once.
 
-f. Average the accuracy measures over the 5 folds.
+f.  Average the accuracy measures over the 5 folds.
 
 Step 3) Go through each scenario.
 
-- Repeat steps 1 -- 2, each time using a different combination of the manipulated factors (i.e. number of predictors, degree of multicollinearity and sample size). In other words, cycle through all of the 132 validation scenarios. All of the calculated accuracy measures from this process make up the results for a single iteration of the simulation.
+-   Repeat steps 1 -- 2, each time using a different combination of the manipulated factors (i.e. number of predictors, degree of multicollinearity and sample size). In other words, cycle through all of the 132 validation scenarios. All of the calculated accuracy measures from this process make up the results for a single iteration of the simulation.
 
 Once the entire simulation procedure was complete (steps 1 -- 3, for each iteration), accuracy measures were summarized over the 500 iterations, within each unique scenario.
 
@@ -149,6 +153,8 @@ Once the entire simulation procedure was complete (steps 1 -- 3, for each iterat
 The results below are based on the mean of the respective accuracy measures over the 500 iterations. Sample sizes seem to have a relationship with each accuracy measure, testing $RMSE$ and testing $R^2$, although it is very slight for both of them. ??? shows a decreasing trend in $RMSE$ as $n$ increases for all of the different correlation structures. Note that results shown on this figure are for a fixed number of predictor variables $p = 5$. When $p = 3$ (which is not shown), the same pattern is present except with a little more variability. Conversely, if $p$ is increased to seven (also not shown), the testing $RMSE$s for each level of multicollinearity are practically equivalent at all values of $n$.
 
 <!-- image placeholder -->
+
+<!-- {{< embed notebooks/simulation.qmd#fig-test >}} -->
 
 Using the same data from the previous plot, Figure ??? singles out the trend line for a medium correlation level and five predictor variables and also superimposes the sample size recommendations from the rules of thumb in @tbl-mlr-rot. It appears that testing $RMSE$ levels off once the sample size is greater than about 60.
 
