@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.545">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Colton Gearhart">
+<meta name="author" content="John Bailer">
+<meta name="dcterms.date" content="2024-01-17">
+
+<title>Sample size rules of thumb for out-of-sample prediction quality in multiple Regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta name="citation_title" content="Sample size rules of thumb for out-of-sample prediction quality in multiple Regression">
+<meta name="citation_abstract" content="Determining how large of a sample is needed is an important step when planning studies; if too large, resources could be wasted and if too small, the usefulness of any results can be greatly affected. A key factor in choosing an appropriate sample size is the goal of the particular analysis. If explanation, as reflected by hypothesis tests of particular regression coefficients is the goal, there are many existing and different types of methods to help guide researchers with sample size calculations. However, if the goal of a study is prediction, then available methods are more limited. Through many different defined scenarios, a Monte Carlo simulation was performed to assess the predictive accuracy of multiple linear regression models that are trained on various sample sizes according to some previously proposed conventional rules. Scenarios were based on different combinations of the number of predictor variables and the degree of multicollinearity between them. Predictive accuracy was measured as the cross-validation root mean square error for predictions and also the squared simple correlation between predicted and observed responses for the holdout samples. Based off this simulation, a slight relationship was found between the sample size and predictive accuracy as measured by root mean square error. While results are general, systematically incorporating other aspects of a multiple linear regression analysis could provide more meaningful insights. Additionally, with the goal of precision in prediction, the subtle patterns do not provide enough evidence to give preference to any of the conventional sample size rules.
+">
+<meta name="citation_author" content="Colton Gearhart">
+<meta name="citation_author" content="John Bailer">
+<meta name="citation_publication_date" content="2024-01-17">
+<meta name="citation_cover_date" content="2024-01-17">
+<meta name="citation_year" content="2024">
+<meta name="citation_online_date" content="2024-01-17">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Strategies for the development of volcanic hazard maps in monogenetic volcanic fields: The example of La Palma (Canary Islands);,citation_author=José Marrero;,citation_author=Alicia García;,citation_author=Manuel Berrocoso;,citation_author=Ángeles Llinares;,citation_author=Antonio Rodríguez-Losada;,citation_author=R. Ortiz;,citation_publication_date=2019-07;,citation_cover_date=2019-07;,citation_year=2019;,citation_doi=10.1186/s13617-019-0085-5;,citation_volume=8;,citation_journal_title=Journal of Applied Volcanology;">
+<meta name="citation_reference" content="citation_title=Statistical power analysis for the behavioral sciences;,citation_author=Jacob Cohen;,citation_publication_date=2013-05-13;,citation_cover_date=2013-05-13;,citation_year=2013;,citation_fulltext_html_url=http://dx.doi.org/10.4324/9780203771587;,citation_doi=10.4324/9780203771587;">
+<meta name="citation_reference" content="citation_title=How Many Subjects Does It Take To Do A Regression Analysis;,citation_author=Samuel B. Green;,citation_publication_date=1991-07;,citation_cover_date=1991-07;,citation_year=1991;,citation_fulltext_html_url=http://dx.doi.org/10.1207/s15327906mbr2603_7;,citation_issue=3;,citation_doi=10.1207/s15327906mbr2603_7;,citation_volume=26;,citation_language=en;,citation_journal_title=Multivariate Behavioral Research;">
+<meta name="citation_reference" content="citation_title=How Many Subjects Does It Take To Do A Regression Analysis;,citation_author=Samuel B. Green;,citation_publication_date=1991-07;,citation_cover_date=1991-07;,citation_year=1991;,citation_fulltext_html_url=http://dx.doi.org/10.1207/s15327906mbr2603_7;,citation_issue=3;,citation_doi=10.1207/s15327906mbr2603_7;,citation_volume=26;,citation_language=en;,citation_journal_title=Multivariate Behavioral Research;">
+<meta name="citation_reference" content="citation_title=The PEAR method for sample sizes in multiple linear regression;,citation_author=Gordon Brooks;,citation_author=Robert Barcikowski;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_volume=38(2);,citation_journal_title=Multiple Linear Regression Viewpoints;">
+<meta name="citation_reference" content="citation_title=Regression and linear models;,citation_author=RIchard Darlington;,citation_publication_date=1990-01-01;,citation_cover_date=1990-01-01;,citation_year=1990;">
+<meta name="citation_reference" content="citation_title=Get the data;,citation_author=Cox Murray;,citation_fulltext_html_url=http://insideairbnb.com/get-the-data.html;">
+<meta name="citation_reference" content="citation_title=A primer of multivariate statistics;,citation_author=Richard J. Harris;,citation_publication_date=2001-05-01;,citation_cover_date=2001-05-01;,citation_year=2001;,citation_fulltext_html_url=http://dx.doi.org/10.4324/9781410600455;,citation_doi=10.4324/9781410600455;">
+<meta name="citation_reference" content="citation_title=The parameters of cross-validation;,citation_author=Paul Herzberg;,citation_fulltext_html_url=https://api.semanticscholar.org/CorpusID:16517021;">
+<meta name="citation_reference" content="citation_title=Sample Size for Multiple Regression: Obtaining Regression Coefficients That Are Accurate, Not Simply Significant.;,citation_author=Ken Kelley;,citation_author=Scott E. Maxwell;,citation_publication_date=2003;,citation_cover_date=2003;,citation_year=2003;,citation_fulltext_html_url=http://dx.doi.org/10.1037/1082-989X.8.3.305;,citation_issue=3;,citation_doi=10.1037/1082-989x.8.3.305;,citation_volume=8;,citation_language=en;,citation_journal_title=Psychological Methods;">
+<meta name="citation_reference" content="citation_title=Numbers of Observations and Variables in Multivariate Analyses;,citation_author=Thomas R. Knapp;,citation_author=Nancy Campbell-Heider;,citation_publication_date=1989-10;,citation_cover_date=1989-10;,citation_year=1989;,citation_fulltext_html_url=http://dx.doi.org/10.1177/019394598901100517;,citation_issue=5;,citation_doi=10.1177/019394598901100517;,citation_volume=11;,citation_language=en;,citation_journal_title=Western Journal of Nursing Research;">
+<meta name="citation_reference" content="citation_title=Sample Sizes When Using Multiple Linear Regression for Prediction;,citation_author=Gregory T. Knofczynski;,citation_author=Daniel Mundfrom;,citation_publication_date=2007-11-09;,citation_cover_date=2007-11-09;,citation_year=2007;,citation_fulltext_html_url=http://dx.doi.org/10.1177/0013164407310131;,citation_issue=3;,citation_doi=10.1177/0013164407310131;,citation_volume=68;,citation_language=en;,citation_journal_title=Educational and Psychological Measurement;">
+<meta name="citation_reference" content="citation_title=Some Practical Guidelines for Effective Sample Size Determination;,citation_author=Russell V Lenth;,citation_publication_date=2001-08;,citation_cover_date=2001-08;,citation_year=2001;,citation_fulltext_html_url=http://dx.doi.org/10.1198/000313001317098149;,citation_issue=3;,citation_doi=10.1198/000313001317098149;,citation_volume=55;,citation_language=en;,citation_journal_title=The American Statistician;">
+<meta name="citation_reference" content="citation_title=A Cross-Validation Approach to Sample Size Determination for Regression Models;,citation_author=Colin N. Park;,citation_author=Arthur L. Dudycha;,citation_publication_date=1974-03;,citation_cover_date=1974-03;,citation_year=1974;,citation_fulltext_html_url=http://dx.doi.org/10.1080/01621459.1974.10480156;,citation_issue=345;,citation_doi=10.1080/01621459.1974.10480156;,citation_volume=69;,citation_language=en;,citation_journal_title=Journal of the American Statistical Association;">
+<meta name="citation_reference" content="citation_title=Sample size and multiple regression analysis.;,citation_author=Scott E. Maxwell;,citation_publication_date=2000;,citation_cover_date=2000;,citation_year=2000;,citation_fulltext_html_url=http://dx.doi.org/10.1037/1082-989X.5.4.434;,citation_issue=4;,citation_doi=10.1037/1082-989x.5.4.434;,citation_volume=5;,citation_language=en;,citation_journal_title=Psychological Methods;">
+<meta name="citation_reference" content="citation_title=Psychometric theory (2nd ed.);,citation_author=Jim Nunnally;,citation_publication_date=1978-01-01;,citation_cover_date=1978-01-01;,citation_year=1978;">
+<meta name="citation_reference" content="citation_title=Sample size and the accuracy of predictions made from multiple regression equations;,citation_author=Richard Sawyer;,citation_publication_date=1982;,citation_cover_date=1982;,citation_year=1982;,citation_fulltext_html_url=http://dx.doi.org/10.2307/1164959;,citation_issue=2;,citation_doi=10.2307/1164959;,citation_volume=7;,citation_journal_title=Journal of Educational Statistics;">
+<meta name="citation_reference" content="citation_title=Measurement, design, and analysis: An integrated approach;,citation_author=Elazar Pedhazur;,citation_author=Liora Schmelkin;,citation_publication_date=1991-05-01;,citation_cover_date=1991-05-01;,citation_year=1991;">
+<meta name="citation_reference" content="citation_title=Applied multivariate statistics for the social sciences;,citation_author=James P. Stevens;,citation_author=James P. Stevens;,citation_publication_date=2001-09-12;,citation_cover_date=2001-09-12;,citation_year=2001;,citation_fulltext_html_url=http://dx.doi.org/10.4324/9781410604491;,citation_doi=10.4324/9781410604491;">
+<meta name="citation_reference" content="citation_title=The PEAR method for sample sizes in multiple linear regression;,citation_author=Robert Barcikowski;,citation_author=Gordon Brooks;,citation_publication_date=2012;,citation_cover_date=2012;,citation_year=2012;,citation_volume=38(2);,citation_journal_title=Multiple Linear Regression Viewpoints;">
+<meta name="citation_reference" content="citation_title=Applied LInear statistical models;,citation_author=Michael Kutner;,citation_author=Christopher Nachtsheim;,citation_author=John Neter;,citation_author=William Li;">
+</head>
+
+<body>
+
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Sample size rules of thumb for out-of-sample prediction quality in multiple Regression</h1>
+          </div>
+
+    
+    <div class="quarto-title-meta-container">
+      <div class="quarto-title-meta-column-start">
+            <div class="quarto-title-meta-author">
+          <div class="quarto-title-meta-heading">Authors</div>
+          <div class="quarto-title-meta-heading">Affiliation</div>
+          
+                <div class="quarto-title-meta-contents">
+            <p class="author">Colton Gearhart <a href="mailto:gearhart.colton.work@gmail.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        <a href="https://miamioh.edu/cas/departments/statistics/index.html">
+                        Miami University
+                        </a>
+                      </p>
+                  </div>
+                      <div class="quarto-title-meta-contents">
+            <p class="author">John Bailer <a href="mailto:baileraj@miamioh.edu" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+          </div>
+                <div class="quarto-title-meta-contents">
+                    <p class="affiliation">
+                        <a href="https://miamioh.edu/cas/departments/statistics/index.html">
+                        Miami University
+                        </a>
+                      </p>
+                  </div>
+                    </div>
+        
+        <div class="quarto-title-meta">
+
+                      
+                <div>
+            <div class="quarto-title-meta-heading">Published</div>
+            <div class="quarto-title-meta-contents">
+              <p class="date">January 17, 2024</p>
+            </div>
+          </div>
+          
+                
+              </div>
+      </div>
+      <div class="quarto-title-meta-column-end quarto-other-formats-target">
+      </div>
+    </div>
+
+    <div>
+      <div class="abstract">
+        <div class="block-title">Abstract</div>
+        <p>Determining how large of a sample is needed is an important step when planning studies; if too large, resources could be wasted and if too small, the usefulness of any results can be greatly affected. A key factor in choosing an appropriate sample size is the goal of the particular analysis. If explanation, as reflected by hypothesis tests of particular regression coefficients is the goal, there are many existing and different types of methods to help guide researchers with sample size calculations. However, if the goal of a study is prediction, then available methods are more limited. Through many different defined scenarios, a Monte Carlo simulation was performed to assess the predictive accuracy of multiple linear regression models that are trained on various sample sizes according to some previously proposed conventional rules. Scenarios were based on different combinations of the number of predictor variables and the degree of multicollinearity between them. Predictive accuracy was measured as the cross-validation root mean square error for predictions and also the squared simple correlation between predicted and observed responses for the holdout samples. Based off this simulation, a slight relationship was found between the sample size and predictive accuracy as measured by root mean square error. While results are general, systematically incorporating other aspects of a multiple linear regression analysis could provide more meaningful insights. Additionally, with the goal of precision in prediction, the subtle patterns do not provide enough evidence to give preference to any of the conventional sample size rules.</p>
+      </div>
+    </div>
+
+
+    <div class="quarto-other-links-text-target">
+    </div>  </div>
+</header><div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#background-and-literature-review-for-sample-size-determinations" id="toc-background-and-literature-review-for-sample-size-determinations" class="nav-link" data-scroll-target="#background-and-literature-review-for-sample-size-determinations"><span class="header-section-number">2</span> Background and literature review for sample size determinations</a>
+  <ul class="collapse">
+  <li><a href="#standard-power-analyses" id="toc-standard-power-analyses" class="nav-link" data-scroll-target="#standard-power-analyses"><span class="header-section-number">2.1</span> Standard power analyses</a></li>
+  <li><a href="#rules-of-thumb" id="toc-rules-of-thumb" class="nav-link" data-scroll-target="#rules-of-thumb"><span class="header-section-number">2.2</span> Rules of thumb</a></li>
+  <li><a href="#other-methods" id="toc-other-methods" class="nav-link" data-scroll-target="#other-methods"><span class="header-section-number">2.3</span> Other methods</a></li>
+  <li><a href="#sec-pred-based-recs" id="toc-sec-pred-based-recs" class="nav-link" data-scroll-target="#sec-pred-based-recs"><span class="header-section-number">2.4</span> Prediction based sample size recommendations</a></li>
+  </ul></li>
+  <li><a href="#methods-simulation-experiment" id="toc-methods-simulation-experiment" class="nav-link" data-scroll-target="#methods-simulation-experiment"><span class="header-section-number">3</span> Methods (simulation experiment)</a>
+  <ul class="collapse">
+  <li><a href="#sec-sim-conditions" id="toc-sec-sim-conditions" class="nav-link" data-scroll-target="#sec-sim-conditions"><span class="header-section-number">3.1</span> Conditions studied and data simulation process</a></li>
+  <li><a href="#sec-preds-evals" id="toc-sec-preds-evals" class="nav-link" data-scroll-target="#sec-preds-evals"><span class="header-section-number">3.2</span> Predictions evaluated</a></li>
+  <li><a href="#sec-implementation" id="toc-sec-implementation" class="nav-link" data-scroll-target="#sec-implementation"><span class="header-section-number">3.3</span> Implementation details</a></li>
+  </ul></li>
+  <li><a href="#results-and-conclusions" id="toc-results-and-conclusions" class="nav-link" data-scroll-target="#results-and-conclusions"><span class="header-section-number">4</span> Results and conclusions</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work"><span class="header-section-number">5</span> Future work</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#sec-appendix" id="toc-sec-appendix" class="nav-link" data-scroll-target="#sec-appendix"><span class="header-section-number">6</span> Appendix</a></li>
+  </ul>
+<div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="notebooks/simulation-preview.html"><i class="bi bi-journal-code"></i>Simulation</a></li></ul></div></nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+  
+
+
+<section id="introduction" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
+<p>An important aspect of nearly every study is determining how large of a sample is needed to support the goals of any analysis. Many things need to be considered when choosing the sample size; it is not as simple as just getting as large of a sample as possible. Researchers know that larger (representative) samples mean more power for hypothesis tests and smaller margin of errors for estimating parameters, and, by default, this will always be preferred to smaller samples. However, this clearly ignores costs and other important considerations. For example, in any study involving human or vertebrate animal subjects, ethical consideration impacts study sizing to make sure that no more participants are put at risk than is strictly necessary. While this is not a concern for observational studies, a common issue is the availability of resources. Data collection and analysis may come at a cost, whether that be time, money or computation time. In designed experiments, this leads to many sample size selections based on the allocated budget. All of these considerations are necessary, but they don’t directly answer the question of why having an appropriately sized study is crucial.</p>
+<p>Common goals for multiple linear regression (MLR) studies are to detect the presence of any effect amongst the entire set of predictors (so a global or omnibus test), to test the effect of a single predictor after taking into account the others, or to develop a predictive model for some continuous response as a function of inputs. For the first two goals, sample size analyses are typically performed in the context of statistical power. This means researchers want to have enough data so that they have a good chance of detecting an effect size that has scientific importance. However, the meaning of “enough” data or large enough sample size may differ for prediction where a specific level of precision in prediction might be the goal.</p>
+<p>In terms of statistical power, if the sample size is too small, “an under-sized study can be a waste of resources for not having the capability to produce useful results, while an over-sized one uses more resources than are necessary” <span class="citation" data-cites="lenth2001">(<a href="#ref-lenth2001" role="doc-biblioref">Lenth 2001</a>)</span>. From a prediction standpoint, insufficient sample sizes translate to models that do not perform well on new samples of data. In other words, the results are not generalizable, they only apply to the current sample <span class="citation" data-cites="barcikowski2012">(<a href="#ref-barcikowski2012" role="doc-biblioref">Barcikowski and Brooks 2012</a>)</span>. Interest in accurate prediction has only grown in recent years and MLR is often taught as one of the first supervised learning methods. Techniques such as cross-validation are already frequently used to assess prediction quality and select models, but can the sample size rules of thumb suggested for sizing studies for hypothesis testing also be used to help size a study for prediction? Determining if conventional sample size rules provide enough data to predict well in various scenarios is the main focus of the research presented here.</p>
+</section>
+<section id="background-and-literature-review-for-sample-size-determinations" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="background-and-literature-review-for-sample-size-determinations"><span class="header-section-number">2</span> Background and literature review for sample size determinations</h2>
+<p>Sample size calculations related to a power analysis, which are based off hypothesis tests of particular parameters in a model, are common and familiar <span class="citation" data-cites="maxwell2000">(<a href="#ref-maxwell2000" role="doc-biblioref">Maxwell 2000</a>)</span>. This strategy represents one class of methods that help guide practitioners for sample size calculations. In this area, literature is well developed and there are many existing methods that cover a variety of MLR goals. Another popular type of recommendations for sample size comes from conventional rules of thumb, which are much more simplistic than conducting power analyses and are usually simple linear combinations of the number of parameters in a model.</p>
+<section id="standard-power-analyses" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="standard-power-analyses"><span class="header-section-number">2.1</span> Standard power analyses</h3>
+<p>Formal sample size calculations are performed using non-central <span class="math inline">\(t\)</span> or <span class="math inline">\(F\)</span> distributions to detect the impact of a particular single variable or set of variables, respectively. A common goal for MLR studies is to detect the presence of any effect among the entire set of predictors. This corresponds to an omnibus test of the null hypotheses that none of <span class="math inline">\(p\)</span> predictor variables are needed, e.g.&nbsp;<span class="math inline">\(H_0: \beta_1 = \ldots = \beta_p = 0\)</span>. The non-centrality parameters of these distributions are related to the value of the regression coefficients in the population, the <span class="math inline">\(\beta\)</span>s.</p>
+<p>When <span class="math inline">\(p = 1\)</span>, this simplifies to the trivial case of a two-sided test on the slope parameter of a simple linear regression (SLR) model. Theoretical results for the minimum sample size <span class="math inline">\(n\)</span> that achieves some power can easily be obtained using a non-central <span class="math inline">\(t\)</span> distribution. The non-centrality parameter <span class="math inline">\(\lambda\)</span> represents the effect size, or in other words, <span class="math inline">\(\lambda\)</span> is the standardized difference between the null value of <span class="math inline">\(\beta_1\)</span> and some hypothesized nonzero value of <span class="math inline">\(\beta_1\)</span>. If we posit some specific non-zero value of <span class="math inline">\(\beta_1\)</span>, the distributions of the test statistic <span class="math inline">\(t^*\)</span> are known both under null and the alternative hypotheses (see appendix for a more formal, written out explanation). A probability statement can be set up (with a desired power, say 0.8, and a constant Type I error rate level, say <span class="math inline">\(\alpha = 0.05\)</span>, where the only two unknowns are <span class="math inline">\(n\)</span> and <span class="math inline">\(\lambda\)</span>. Because the latter is a function of <span class="math inline">\(n\)</span>, the <span class="math inline">\(n\)</span> that yields this desired power for specified <span class="math inline">\(\lambda\)</span> can be obtained.</p>
+<p>The single predictor variable case shown above can be generalized to MLR if <span class="math inline">\(p = 2, 3, \ldots\)</span>. When this is the case, many more factors need to be considered, and each one adds another layer of complexity to the sample size calculations. This holds true when trying to test other hypotheses for MLR as well, such as the effect of an individual predictor. This task becomes quite difficult because the predictor variables are often correlated as well and this is part of the specification of effect sizes for sample size planning <span class="citation" data-cites="maxwell2000">(<a href="#ref-maxwell2000" role="doc-biblioref">Maxwell 2000</a>)</span>. With all factors considered, explicit solutions to these sample size problems become very hard, if not impossible to obtain without introducing an unreasonable number of assumptions, which is why researchers often search for other ways to help size their study.</p>
+</section>
+<section id="rules-of-thumb" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="rules-of-thumb"><span class="header-section-number">2.2</span> Rules of thumb</h3>
+<p>One way to plan required sample sizes without using power calculations is by using some conventional sample size rules, which can be referred to as rules of thumb (RoT). In the context of MLR studies, many rules of thumb for determining the required sample sizes have been proposed. In general, they can be written as <span class="math inline">\(n \ge g(p)\)</span>, where <span class="math inline">\(g(p)\)</span> is some function of the number of predictors variables. Some examples include <span class="math inline">\(n \ge 15p\)</span> <span class="citation" data-cites="stevens2001">(<a href="#ref-stevens2001" role="doc-biblioref">Stevens and Stevens 2001</a>)</span>, which suggests that for each additional predictor variable being considered, 15 additional subjects are required and also <span class="math inline">\(n \ge 30 + 10p\)</span> is recommended by <span class="citation" data-cites="knapp1989">Knapp and Campbell-Heider (<a href="#ref-knapp1989" role="doc-biblioref">1989</a>)</span>, which has a similar interpretation, except a base of 30 subjects is added.</p>
+<p>These rules of thumb for sample size determinations in the place of power analyses allow for rapid determination of a study design using only the size of the predictor set without needing to specify relationships among the predictors or anticipated impact of the predictors on the response. One problem is that there often is not good justification or documentation for how these rules were derived. For example, <span class="citation" data-cites="nunnally1978">Nunnally (<a href="#ref-nunnally1978" role="doc-biblioref">1978</a>)</span> recommendation of samples sizes upwards of 300 or 400 was geared towards developing a prediction equation that will cross-validate <span class="citation" data-cites="maxwell2000">(<a href="#ref-maxwell2000" role="doc-biblioref">Maxwell 2000</a>)</span>; however, other authors are not as clear. Additionally, the majority of these RoT fail to consider some measure of effect size, as they are just functions of the number of predictors. This means that “they can only be effective at specific – usually unknown – effect sizes” <span class="citation" data-cites="barcikowski2012">(<a href="#ref-barcikowski2012" role="doc-biblioref">Barcikowski and Brooks 2012</a>)</span>.</p>
+</section>
+<section id="other-methods" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="other-methods"><span class="header-section-number">2.3</span> Other methods</h3>
+<p>Outside of the straight-forward power analyses and the conventional rules, several authors have developed new ways to look at sample size problems. Many other methods exist, but only two are discussed here for demonstration.</p>
+<p>A theoretical / formulaic approach to conduct a power analysis using the non-central F distribution was used by <span class="citation" data-cites="maxwell2000">(<a href="#ref-maxwell2000" role="doc-biblioref">Maxwell 2000</a>)</span>. While it is a variant of the hypothesis testing sizing methods, it has an interesting strategy for simplifying complex sample size problem. This method is geared towards finding the required sample size for to have adequate power when testing the effect of a single predictor, after controlling for the other included predictors. Previous research has shown that it is possible to write the effect size as a function of various types of population correlation coefficients, such as the squared semipartial correlation for a particular <span class="math inline">\(X\)</span> variable or the overall <span class="math inline">\(R^2\)</span> between <span class="math inline">\(Y\)</span> and the set of <span class="math inline">\(X\)</span>s, among others. However, these “approaches require more information that is available” <span class="citation" data-cites="maxwell2000">(<a href="#ref-maxwell2000" role="doc-biblioref">Maxwell 2000</a>)</span> and researchers often don’t have good intuitions about reasonable values for these complex population parameters. Because of this, the proposed method is based on <em>a priori</em> beliefs about plausible zero order-correlation values, which researchers are often much more confident about. Then by introducing a simplifying assumption of an exchangeable correlation structure (i.e.&nbsp;each of the predictors is assumed to have a common correlation with the response and also each predictor correlates to the others with a common value), sample size estimations can be made.</p>
+<p><span class="citation" data-cites="kelley2003">Kelley and Maxwell (<a href="#ref-kelley2003" role="doc-biblioref">2003</a>)</span> also developed another approach that emphasized Accuracy In Parameter Estimation (AIPE). The main goal of this method is to help plan studies that are able to determine the direction of an effect, estimate the effect accurately and also reject null the hypothesis with adequate power simultaneously. The specific target for accuracy is to provide sample size recommendations that yield sufficiently narrow confidence intervals for estimated population regression coefficients <span class="citation" data-cites="kelley2003">(<a href="#ref-kelley2003" role="doc-biblioref">Kelley and Maxwell 2003</a>)</span>. This is done by framing the margin of error for the confidence interval (CI) of interest in terms of a population variance <span class="math inline">\(\sigma^2\)</span>. However, because this is usually unknown, the CI is actually based on the sample variance <span class="math inline">\(s^2\)</span>. If by random chance this turns out to be larger than <span class="math inline">\(s^2\)</span>, the resulting estimated interval will be wider than desired. To combat this, a tolerance level is introduced that represents the probability the interval will be wider than desired. As a result, larger sample sizes are needed than if some tolerance was not taken into consideration <span class="citation" data-cites="kelley2003">(<a href="#ref-kelley2003" role="doc-biblioref">Kelley and Maxwell 2003</a>)</span>. In doing so, the expected width of the CI of interest is controlled.</p>
+</section>
+<section id="sec-pred-based-recs" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="sec-pred-based-recs"><span class="header-section-number">2.4</span> Prediction based sample size recommendations</h3>
+<p>Relative to the amount and diversity of literature for power-based methods, sample size determination where the main goal is prediction is nowhere near as comprehensive. However, it has been asserted that “sample size will almost certainly have to be much larger for obtaining a useful prediction equation than for testing the statistical significance of the multiple correlation coefficient” <span class="citation" data-cites="maxwell2000">(<a href="#ref-maxwell2000" role="doc-biblioref">Maxwell 2000</a>)</span>. Even though a sample size may provide adequate power, there is no guarantee that it will lead to models that are generalizable to future samples, which is more or less the main goal of predictive modelling. Of course, implicit in the challenge of prediction is the assumption that the model being used is correctly specified.</p>
+<p><span class="citation" data-cites="knofczynski2007">Knofczynski and Mundfrom (<a href="#ref-knofczynski2007" role="doc-biblioref">2007</a>)</span> provided guidelines for sample sizes when the main goal was to have accurate predictions; more specifically, they wanted to find “sample regression models that predict similarly to the population regression model”. Here, “similar” is defined as a strong enough correlation between the predictions based off the sample and the population models. In other words, a sample size is deemed sufficient if a large enough proportion of the replications (<span class="math inline">\(&gt; 0.95\)</span>) had a correlation greater than 0.92 or 0.98 (for good and excellent prediction levels, respectively) between predicted <span class="math inline">\(Y\)</span>s using population information <span class="math inline">\(\hat{Y}_{\text{pop}} = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p\)</span> and predicted Ys using sample information <span class="math inline">\(\hat{Y}_{\text{sample}} = \hat{\beta}_0 + \hat{\beta}_1 X_1 + \cdots + \hat{\beta}_p X_p\)</span>. Monte Carlo simulations were performed under a variety of settings for the number of predictors, population correlation structures among these predictors and also the population between the dependent and set of independent variables. Given an anticipated <span class="math inline">\(R^2_{YX}\)</span> (the squared multiple correlation coefficient between <span class="math inline">\(Y\)</span> and the set of <span class="math inline">\(X\)</span>s), results of these simulations showed as <span class="math inline">\(R^2_{YX}\)</span> decreases, <span class="math inline">\(n\)</span> increases exponentially; in other words, less correlated population data requires larger sample sizes for good predictions.</p>
+<p><span class="citation" data-cites="barcikowski2012">Barcikowski and Brooks (<a href="#ref-barcikowski2012" role="doc-biblioref">2012</a>)</span> proposed the Precision Efficacy Analysis for Regression (PEAR) method, whose primary goal is to make sure that sample regression models are generalizable to future samples. It does this by limiting the amount of cross-validity shrinkage <span class="math inline">\(\epsilon\)</span>. This can be defined as <span class="math inline">\(\epsilon = R^2 - R^2_C\)</span>, where <span class="math inline">\(R^2_C\)</span> is a measure of the effectiveness of a sample regression model when applied to other samples <span class="citation" data-cites="herzberg">(<a href="#ref-herzberg" role="doc-biblioref">Herzberg, n.d.</a>)</span>. This quantity can be interpreted as “the difference between a regression model’s apparent validity, as measured by <span class="math inline">\(R^2\)</span>, and its actual predictive cross-validity” <span class="citation" data-cites="darlington1990">(<a href="#ref-darlington1990" role="doc-biblioref">Darlington 1990</a>)</span>. The PEAR method has been shown to better than numerous other methods that share the same goal of limiting cross-validity shrinkage, and new results suggest that it is also effective for providing regression coefficients with smaller standard errors.</p>
+</section>
+</section>
+<section id="methods-simulation-experiment" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="methods-simulation-experiment"><span class="header-section-number">3</span> Methods (simulation experiment)</h2>
+<p>As noted in the Introduction, the goal of this paper is to study sample size recommendations for prediction in MLR. This is investigated using a simulation experiment where 5-fold cross validation was implemented to measure the out-of-sample prediction performance of models based on various sample sizes. This strategy more closely resembles what is done in practice, where a single sample needs to be used for both training and testing, rather than two distinct samples. Sample sizes were chosen according to some of the proposed RoT and two population characteristics, the number of predictors and the degree of multicollinearity between them, were manipulated to cover a wide range of validating scenarios. Models were fit in the context of observational studies, where there was not a design for the levels of the predictor variables.</p>
+<section id="sec-sim-conditions" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="sec-sim-conditions"><span class="header-section-number">3.1</span> Conditions studied and data simulation process</h3>
+<p>The main factor of interest for the simulation described below was the sample sizes used for the 5-fold cross validation procedure. Because two other factors were manipulated (number of predictors and degree of multicollinearity), comparison of prediction quality for different sample sizes needed to be made for fixed levels of the other factors. Sample sizes were chosen according to several proposed RoT, each of which had a different way of incorporating the number of predictors into their recommendations for <span class="math inline">\(n\)</span>. The RoT considered are shown in the table below in <a href="#tbl-mlr-rot" class="quarto-xref">Table&nbsp;1</a>. Note that several of the justifications for these rules involve minimizing shrinkage (also called cross-validity shrinkage), <span class="math inline">\(\epsilon\)</span>, as defined in <a href="#sec-pred-based-recs" class="quarto-xref">Section&nbsp;2.4</a>.</p>
+<!-- NOTE: find justification for other rules -->
+<div id="tbl-mlr-rot" class="quarto-float anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mlr-rot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Rules of thumb for multiple regression
+</figcaption>
+<div aria-describedby="tbl-mlr-rot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 31%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">General rule: <span class="math inline">\(n \ge g(p)\)</span></th>
+<th style="text-align: left;"><span class="math inline">\(n_{\text{train}}\)</span> (e.g.&nbsp;with <span class="math inline">\(p = 5\)</span>)</th>
+<th style="text-align: left;">Justification for the rule</th>
+<th style="text-align: left;">Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(10p\)</span></td>
+<td style="text-align: left;">50</td>
+<td style="text-align: left;">Informal survey of faculty about rules of thumb they consider for sizing MLR studies.</td>
+<td style="text-align: left;">Origin of this rule is unclear.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(15p\)</span></td>
+<td style="text-align: left;">75</td>
+<td style="text-align: left;">Based on Park and Dudycha’s (1974) tables, it was found that generally about 15 subjects per predictor provides reliable regression equations for prediction. This was found under the assumption of the squared population multiple correlation <span class="math inline">\(\rho^2 = 0.5\)</span>, which is a reasonable guess for social science research.</td>
+<td style="text-align: left;"><span class="citation" data-cites="stevens2001">Stevens and Stevens (<a href="#ref-stevens2001" role="doc-biblioref">2001</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(8p + 50\)</span></td>
+<td style="text-align: left;">90</td>
+<td style="text-align: left;">Provides power of approximately 80% or more for tests of a multiple correlation with a medium effect size, which can be defined as Cohen’s <span class="math inline">\(f^2 = R^2 / (1 - R^2) = 0.15\)</span> or equivalently <span class="math inline">\(R^2 = 0.13\)</span> (note that <span class="citation" data-cites="cohen2013">Cohen (<a href="#ref-cohen2013" role="doc-biblioref">2013</a>)</span> suggested these values in the context of behavioral sciences).</td>
+<td style="text-align: left;"><span class="citation" data-cites="green1991">Green (<a href="#ref-green1991" role="doc-biblioref">1991</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(10.8p + 11.8\)</span></td>
+<td style="text-align: left;">66</td>
+<td style="text-align: left;">Provides sample sizes with the goal of minimizing prediction error (as measured by mean absolute error, MAE) for MLR models based on a random sample of a multivariate normal population.</td>
+<td style="text-align: left;"><span class="citation" data-cites="sawyer1982">Sawyer (<a href="#ref-sawyer1982" role="doc-biblioref">1982</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The number of total predictors <span class="math inline">\(p\)</span> was set at 3, 6 and 9 (note that the set of <span class="math inline">\(n\)</span> were chosen to cover the entire range of sample size recommendations based on the selected RoT for the largest number of predictors <span class="math inline">\(p = 9\)</span>). Only <span class="math inline">\(q\)</span> of which will be active predictors; the remaining <span class="math inline">\(p-q\)</span> predictors are noise variables (note that proportion of <span class="math inline">\(q\)</span> active predictors to <span class="math inline">\(p\)</span> total predictors, so-called <span class="math inline">\(q\)</span>-ratios, were 1/3, 2/3 and 3/3 for each level of <span class="math inline">\(p\)</span>; thus, for <span class="math inline">\(p = 3\)</span>: <span class="math inline">\(q = 1, 2, 3\)</span>; for <span class="math inline">\(p = 6\)</span>: <span class="math inline">\(q = 2, 4, 6\)</span> for <span class="math inline">\(p = 9\)</span>: <span class="math inline">\(q = 3, 6, 9\)</span>). The degree of linear association between these sets of predictors were set at independent, low, medium-low and medium levels. Without loss of generality, correlation matrices were used when specifying the variance-covariance parameter <span class="math inline">\(\Sigma_X\)</span> of the multivariate normal distribution used to generate the design matrix. This means all the diagonal terms of <span class="math inline">\(\Sigma_X\)</span> were always set to one (i.e.&nbsp;a unit variance of one) and all off-diagonal values represent pairwise correlation coefficients between <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> (<span class="math inline">\(i \ne j\)</span>). Additionally, all correlation coefficients <span class="math inline">\(\rho\)</span> were assumed to be non-negative for simplicity (i.e.&nbsp;<span class="math inline">\(0 \le \rho \le 1\)</span>). When all predictors were independent, off diagonal correlation coefficients were set to zero. Low correlation coefficients were defined as being in the interval <span class="math inline">\((0, 0,2]\)</span>. Medium-low correlation coefficients were defined as being in the interval <span class="math inline">\([0.2, 0.4]\)</span>. Medium correlation coefficients were defined as being in the interval <span class="math inline">\([0.4, 0.6]\)</span>. Specific values for the off-diagonal terms were randomly generated from a uniform distribution with bounds corresponding to that of the respective multicollinearity level. High correlation coefficients (i.e.&nbsp;<span class="math inline">\(\rho &gt; 0.6\)</span>) were excluded to avoid extreme multicollinearity. In total, all possible combinations of the sample sizes, number of predictors and degree of multicollinearity defined a set of 132 unique validation scenarios (<span class="math inline">\((n \times p \times q \times \rho_{XX}) = (11 \times 3 \times 3 \times 4) = 396\)</span>).</p>
+<p>For a general scenario with <span class="math inline">\(q\)</span> active predictors, <span class="math inline">\(p-q\)</span> inactive predictors, some level of multicollinearity and <span class="math inline">\(n\)</span> observations, the first step in generating the sample data was to construct a proper / usable correlation matrix (i.e.&nbsp;symmetric and positive definite). Values for the simple correlation coefficients were randomly sampled from a uniform distribution with bounds based on the multicollinearity level and filled in so that the matrix was symmetric. Then the <span class="math inline">\(n\)</span> rows of the design matrix were generated by sampling <span class="math inline">\((X_1, \ldots, X_p)\)</span> from a <span class="math inline">\(\text{MVN}_p(\mu_X, \rho_{XX})\)</span> where <span class="math inline">\(\mu_X\)</span> is the mean vector of the <span class="math inline">\(p\)</span> predictor variables. This leads to <span class="math inline">\(Y \mid (X_1, \ldots, X_p) \sim \text{N}(\mu_{Y \mid X}, \sigma^2)\)</span>, where <span class="math inline">\(\mu_{Y \mid X} = \beta_1 X_1 + \cdots + \beta_p X_p\)</span>. Several simplifying assumptions were made during the data generation process. <span class="math inline">\(\mu_X\)</span> was assumed to be a zero vector, <span class="math inline">\(\mu_{Y \mid X}\)</span> did not include an intercept term <span class="math inline">\(\beta_0\)</span>, each each population regression coefficient <span class="math inline">\(\beta_i\)</span>, <span class="math inline">\(i = 1, \ldots, p\)</span>, was randomly generated from a uniform distribution with arbitrarily selected bounds <span class="math inline">\([-4, 4]\)</span>, and lastly the amount of error variation in the response was held constant at an arbitrarily chosen value <span class="math inline">\(\sigma^2 = 100\)</span>. All of this can be summarized with the following population model:</p>
+<p><span id="eq-pop-model"><span class="math display">\[Y_i = \beta_1 X_1 + \cdots + \beta_p X_p + \epsilon_i \tag{1}\]</span></span></p>
+<p>where <span class="math inline">\(X \sim \text{MVN}_p(\mu_X = \boldsymbol{0}, \rho_{XX})\)</span>, <span class="math inline">\(\beta_j ~ \text{Uniform}(-4, 4)\)</span>, and <span class="math inline">\(\epsilon_i \overset{iid}\sim \text{N}(0, \sigma^2 = 100)\)</span>.</p>
+</section>
+<section id="sec-preds-evals" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="sec-preds-evals"><span class="header-section-number">3.2</span> Predictions evaluated</h3>
+<p>During the cross-validation procedure, each model was trained, and predictions were made on the holdout set of observations (see outlined steps in <a href="#sec-implementation" class="quarto-xref">Section&nbsp;3.3</a>). The quality of these out-of-sample predictions were judged on two accuracy measures: root mean squared error (<span class="math inline">\(RMSE\)</span> for prediction) and out of sample <span class="math inline">\(R^2\)</span> (<a href="#eq-rmse" class="quarto-xref">Equation&nbsp;2</a> and <a href="#eq-oos-r2" class="quarto-xref">Equation&nbsp;3</a> below). These allowed for accuracy to be assessed from two different perspectives. <span class="math inline">\(RMSE\)</span> is a distance metric that represents the square root of the average squared prediction error. Relative to a large <span class="math inline">\(RMSE\)</span>, a smaller <span class="math inline">\(RMSE\)</span> means that on average, predicted responses are closer to the true values. Thus, the goal is to minimize <span class="math inline">\(RMSE\)</span>. It is calculated as follows:</p>
+<p><span id="eq-rmse"><span class="math display">\[\text{RMSE} = \bigg[\frac{1}{n_{\text{test}}} \sum^{n_{\text{test}}}_{i = 1} (y_{\text{new, }i} - \hat{y}_{\text{new, }i})^2\bigg]^{1/2} \tag{2}\]</span></span></p>
+<p>Out-of-sample <span class="math inline">\(R^2\)</span> is a measure of the closeness of predicted responses to observed responses in a test data set based upon a model derived from distinct training data. Larger values of <span class="math inline">\(R^2\)</span> indicate that there is a stronger association between the predicted responses and the actual responses. Out-of-sample <span class="math inline">\(R^2\)</span> can is calculated by:</p>
+<p><span id="eq-oos-r2"><span class="math display">\[R^2_{\text{test}} = \text{Cor}(y_{\text{new}}, \hat{y}_{\text{new}})^2 \tag{3}\]</span></span></p>
+</section>
+<section id="sec-implementation" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="sec-implementation"><span class="header-section-number">3.3</span> Implementation details</h3>
+<p>Below are the steps used to conduct the Monte Carlo simulation within R; this outlined procedure was performed for each iteration of the simulation (in total, 500 iterations were run for each scenario).</p>
+<p>Step 1) Get sample of data.</p>
+<ol type="a">
+<li><p>For a particular number of predictors <span class="math inline">\(p\)</span> and level of multicollinearity, generate the correlation matrix.</p></li>
+<li><p>Once a proper matrix is obtained, simulate <span class="math inline">\(n\)</span> observations for <span class="math inline">\(X\)</span> utilizing <span class="math inline">\(\rho_{XX}\)</span>.</p></li>
+<li><p>Set coefficients for <span class="math inline">\(q\)</span> active predictors to a constant, arbitrarily chosen value of <span class="math inline">\(\beta_i = 0.2, \hspace{10pt} i = 1, \dots, q\)</span> and non active predictor coefficients to zero <span class="math inline">\(\beta_i = 0, \hspace{10pt} i = q + 1, \dots, p\)</span>. Then simulate the response variable <span class="math inline">\(Y\)</span> for each of the <span class="math inline">\(n\)</span> observations according to the population model in <a href="#eq-pop-model" class="quarto-xref">Equation&nbsp;1</a>.</p></li>
+</ol>
+<ul>
+<li>Note that all the above tasks for step 1 should be carried out following the descriptions in <a href="#sec-sim-conditions" class="quarto-xref">Section&nbsp;3.1</a>.</li>
+</ul>
+<p>Step 2) Perform 5-fold cross validation.</p>
+<ol type="a">
+<li><p>Partition sample data from step 1 into 5 groups (aka folds).</p></li>
+<li><p>Fit a sample MLR model using only data from four of the folds (e.g.&nbsp;folds 1 - 4).</p></li>
+<li><p>Using the regression equation from the above model, obtain the predicted values for observations in the fold that was held out (in this example, fold 5).</p></li>
+<li><p>Calculate the two accuracy measures described in <a href="#sec-preds-evals" class="quarto-xref">Section&nbsp;3.2</a>, <a href="#eq-rmse" class="quarto-xref">Equation&nbsp;2</a> and <a href="#eq-oos-r2" class="quarto-xref">Equation&nbsp;3</a>.</p></li>
+<li><p>Repeat steps b - d until each fold has been used as the testing set exactly once.</p></li>
+<li><p>Average the accuracy measures over the 5 folds.</p></li>
+</ol>
+<p>Step 3) Go through each scenario.</p>
+<ul>
+<li>Repeat steps 1 – 2, each time using a different combination of the manipulated factors (i.e.&nbsp;number of predictors, degree of multicollinearity and sample size). In other words, cycle through all of the 132 validation scenarios. All of the calculated accuracy measures from this process make up the results for a single iteration of the simulation.</li>
+</ul>
+<p>Once the entire simulation procedure was complete (steps 1 – 3, for each iteration), accuracy measures were summarized over the 500 iterations, within each unique scenario.</p>
+</section>
+</section>
+<section id="results-and-conclusions" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="results-and-conclusions"><span class="header-section-number">4</span> Results and conclusions</h2>
+<p>The results below in <a href="#fig-rmse-focused" class="quarto-xref">Figure&nbsp;1</a> are based on the mean of the respective accuracy measures over the 500 iterations.</p>
+<div id="fig-rmse-focused" class="quarto-figure quarto-figure-left quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-rmse-focused-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Plots of RMSE by sample size when all predictors are active (q-ratio = 3/3) with sample size rules of thumb overlaid
+</figcaption>
+<div aria-describedby="fig-rmse-focused-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="files/plot-rmse-focused-annotated.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="files/plot-rmse-focused-annotated.png" class="img-fluid figure-img"></a>
+</div>
+</figure>
+</div>
+<p>The driving factors of the differing <span class="math inline">\(RMSE\)</span> values were sample size <span class="math inline">\(n\)</span> and the number of predictors <span class="math inline">\(p\)</span>. In all three levels of predictors, there is a downward trend in <span class="math inline">\(RMSE\)</span> as <span class="math inline">\(n\)</span> increases. This pattern hints towards an asymptote for the minimum <span class="math inline">\(RMSE\)</span> that can be achieved, and it is achieved quicker with smaller <span class="math inline">\(p\)</span>. This suggests that smaller sample sizes and larger predictors sets encounter overfitting, which is to be expected. It is important to note that the decreasing trend is somewhat magnified in <a href="#fig-rmse-focused" class="quarto-xref">Figure&nbsp;1</a> because of the scale; there is only approximately a 0.2-unit change in average <span class="math inline">\(RMSE\)</span> for <span class="math inline">\(p = 9\)</span> between the minimum and maximum sample sizes that were tested (for perspective, <span class="math inline">\(\sigma = 1\)</span> for the population model). A zoomed-out plot of this can be found in <a href="#sec-appendix" class="quarto-xref">Section&nbsp;6</a>.</p>
+<p>It can also be noted from <a href="#fig-rmse-focused" class="quarto-xref">Figure&nbsp;1</a> that <span class="math inline">\(RMSE\)</span> values across all sample sizes for different multicollinearity levels for a given number of predictors <span class="math inline">\(p\)</span> were nearly identical, which is consistent with theory stating that prediction power is not affected by multicollinearity <span class="citation" data-cites="kutner">(<a href="#ref-kutner" role="doc-biblioref">Kutner et al., n.d.</a>)</span>. This serves in part to validate the setup of the simulation. Additionally, trends and <span class="math inline">\(RMSE\)</span> values for <span class="math inline">\(q\)</span>-ratio’s of 1/3 and 2/3 were identical to that of 3/3 shown in <a href="#fig-rmse-focused" class="quarto-xref">Figure&nbsp;1</a> (these plots can be seen in <a href="#sec-appendix" class="quarto-xref">Section&nbsp;6</a>). This may be because the effect size between <span class="math inline">\(Y\)</span> and the set of <span class="math inline">\(X\)</span>s was left uncontrolled, and population <span class="math inline">\(\beta\)</span> values for the active predictors were set a constant, arbitrarily chosen value of 0.2 (for reference, the population error variance was <span class="math inline">\(\sigma = 1\)</span>).</p>
+<p>Taking all of this into account, the very slight decreasing trend and the apparent leveling off, it is not possible to say if one RoT would provide significantly better predictions than any other rule in terms of average prediction error magnitude.</p>
+<p>Results based on <span class="math inline">\(R^2_{Test}\)</span> are shown below in <a href="#fig-r2-focused" class="quarto-xref">Figure&nbsp;2</a>.</p>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-r2-focused" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-r2-focused" class="quarto-figure quarto-figure-left quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-r2-focused-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Plots of R-squared by sample size for different q-ratios with sample size rules of thumb overlaid
+</figcaption>
+<div aria-describedby="fig-r2-focused-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-simulation-fig-r2-focused-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/notebooks-simulation-fig-r2-focused-output-1.png" class="img-fluid figure-img"></a>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-1" href="notebooks/simulation-preview.html#cell-fig-r2-focused">Source: Simulation</a></div>
+<p>It can be seen that an increase in multicollinearity levels causes an inflation in <span class="math inline">\(R^2_{Test}\)</span> across all level of predictors and <span class="math inline">\(q\)</span>-ratios. Additionally, this inflation is much more pronounced when there are more active predictors (as shown by the gaps in the 3/3 <span class="math inline">\(q\)</span>-ratio). Similar trends were found in the <span class="math inline">\(q\)</span>-ratio of 2/3 (not shown), just less pronounced. As expected, increasing the number of predictors steadily increases the <span class="math inline">\(R^2_{Test}\)</span>. However, the downward trends shown when there is a <span class="math inline">\(q\)</span>-ratio of 1/3 and for some of the multicollinearity levels with all active predictors were not anticipated and go against intuition. With larger sample sizes, one would expect the intermediate models fit during the cross-validation procedure to have more and more accurate predictions, on average. This would then carry through when averaging over the folds and the many iterations, ultimately leading to larger estimates for the testing <span class="math inline">\(R^2\)</span>. However, that is not what happened here; more investigation is needed to find and understand the cause. Because of this uncertainty, sample sizes recommendations geared to this accuracy measure will not be shown or discussed.</p>
+<p>Overall, when quantifying quality of predictions with <span class="math inline">\(RMSE\)</span>, results showed only small changes when increasing the sample size from 30 to 300. This may be because certain aspects aspects of the simulation process with MLR models were left uncontrolled like some measure of effect size between <span class="math inline">\(Y\)</span> and the set of <span class="math inline">\(X\)</span>s. Despite this, there was some noticeable patterns and trends between <span class="math inline">\(RMSE\)</span> and sample sizes (for a given level of multicollinearity and the number of predictors) that merit further investigation. Perhaps these relationships will be more pronounced when looked across even more general simulation settings. However, based on the implemented scenarios of this simulation, larger sample sizes did not see enough of a benefit in accuracy (i.e.&nbsp;smaller <span class="math inline">\(RMSE\)</span>) to warrant the large increases in <span class="math inline">\(n\)</span>. Thus, by default preference would be given to RoT that recommend smaller sample sizes when the goal of a MLR study is to have accurate predictions. Lastly, due to the suspicious pattern, nothing can be gleaned from the results when using out-of-sample <span class="math inline">\(R^2\)</span> as the measure of predictive accuracy.</p>
+</section>
+<section id="future-work" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="future-work"><span class="header-section-number">5</span> Future work</h2>
+<p>Results presented were fairly general because numerous situations were explored in terms of the number of predictors and the relationship between them. However, effect size was not controlled. Regardless of how it is defined, effect size is a key part in any analysis. Results would likely be more applicable if it was taken into account. Literature has shown that recommended sample size is a decreasing function of effect size. One potential way to control effect size is to use standardized regression models. By using a correlation transformation on both the <span class="math inline">\(Y\)</span> and <span class="math inline">\(X\)</span> data, these models allow the practitioner to directly specify the pairwise simple correlations between the response and each individual predictor variable. This enables population regression coefficients to be expressed as a function of this correlation vector. It is suspected that other methods for controlling the strength of the response to predictor relationship also involve the specification of the population <span class="math inline">\(\beta\)</span>s.</p>
+<p>Another avenue to extend this research would be to explore generalized linear models (GLM), such as logistic or Poisson regression. This would require finding new ways to define predictive accuracy that are appropriate for these different types of regression.</p>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-barcikowski2012" class="csl-entry" role="listitem">
+Barcikowski, Robert, and Gordon Brooks. 2012. <span>“The PEAR Method for Sample Sizes in Multiple Linear Regression.”</span> <em>Multiple Linear Regression Viewpoints</em> 38(2).
+</div>
+<div id="ref-cohen2013" class="csl-entry" role="listitem">
+Cohen, Jacob. 2013. <em>Statistical Power Analysis for the Behavioral Sciences</em>. Routledge. <a href="https://doi.org/10.4324/9780203771587">https://doi.org/10.4324/9780203771587</a>.
+</div>
+<div id="ref-darlington1990" class="csl-entry" role="listitem">
+Darlington, RIchard. 1990. <em>Regression and Linear Models</em>. McGraw-Hill College.
+</div>
+<div id="ref-green1991" class="csl-entry" role="listitem">
+Green, Samuel B. 1991. <span>“How Many Subjects Does It Take To Do A Regression Analysis.”</span> <em>Multivariate Behavioral Research</em> 26 (3): 499–510. <a href="https://doi.org/10.1207/s15327906mbr2603_7">https://doi.org/10.1207/s15327906mbr2603_7</a>.
+</div>
+<div id="ref-herzberg" class="csl-entry" role="listitem">
+Herzberg, Paul. n.d. <em>The Parameters of Cross-Validation</em>. <a href="https://api.semanticscholar.org/CorpusID:16517021">https://api.semanticscholar.org/CorpusID:16517021</a>.
+</div>
+<div id="ref-kelley2003" class="csl-entry" role="listitem">
+Kelley, Ken, and Scott E. Maxwell. 2003. <span>“Sample Size for Multiple Regression: Obtaining Regression Coefficients That Are Accurate, Not Simply Significant.”</span> <em>Psychological Methods</em> 8 (3): 305–21. <a href="https://doi.org/10.1037/1082-989x.8.3.305">https://doi.org/10.1037/1082-989x.8.3.305</a>.
+</div>
+<div id="ref-knapp1989" class="csl-entry" role="listitem">
+Knapp, Thomas R., and Nancy Campbell-Heider. 1989. <span>“Numbers of Observations and Variables in Multivariate Analyses.”</span> <em>Western Journal of Nursing Research</em> 11 (5): 634–41. <a href="https://doi.org/10.1177/019394598901100517">https://doi.org/10.1177/019394598901100517</a>.
+</div>
+<div id="ref-knofczynski2007" class="csl-entry" role="listitem">
+Knofczynski, Gregory T., and Daniel Mundfrom. 2007. <span>“Sample Sizes When Using Multiple Linear Regression for Prediction.”</span> <em>Educational and Psychological Measurement</em> 68 (3): 431–42. <a href="https://doi.org/10.1177/0013164407310131">https://doi.org/10.1177/0013164407310131</a>.
+</div>
+<div id="ref-kutner" class="csl-entry" role="listitem">
+Kutner, Michael, Christopher Nachtsheim, John Neter, and William Li. n.d. <em>Applied LInear Statistical Models</em>. 5th ed. McGraw-Hill.
+</div>
+<div id="ref-lenth2001" class="csl-entry" role="listitem">
+Lenth, Russell V. 2001. <span>“Some Practical Guidelines for Effective Sample Size Determination.”</span> <em>The American Statistician</em> 55 (3): 187–93. <a href="https://doi.org/10.1198/000313001317098149">https://doi.org/10.1198/000313001317098149</a>.
+</div>
+<div id="ref-maxwell2000" class="csl-entry" role="listitem">
+Maxwell, Scott E. 2000. <span>“Sample Size and Multiple Regression Analysis.”</span> <em>Psychological Methods</em> 5 (4): 434–58. <a href="https://doi.org/10.1037/1082-989x.5.4.434">https://doi.org/10.1037/1082-989x.5.4.434</a>.
+</div>
+<div id="ref-nunnally1978" class="csl-entry" role="listitem">
+Nunnally, Jim. 1978. <em>Psychometric Theory (2nd Ed.)</em>. McGraw-Hill.
+</div>
+<div id="ref-sawyer1982" class="csl-entry" role="listitem">
+Sawyer, Richard. 1982. <span>“Sample Size and the Accuracy of Predictions Made from Multiple Regression Equations.”</span> <em>Journal of Educational Statistics</em> 7 (2): 91. <a href="https://doi.org/10.2307/1164959">https://doi.org/10.2307/1164959</a>.
+</div>
+<div id="ref-stevens2001" class="csl-entry" role="listitem">
+Stevens, James P., and James P. Stevens. 2001. <em>Applied Multivariate Statistics for the Social Sciences</em>. Psychology Press. <a href="https://doi.org/10.4324/9781410604491">https://doi.org/10.4324/9781410604491</a>.
+</div>
+</div>
+</section>
+<section id="sec-appendix" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-appendix"><span class="header-section-number">6</span> Appendix</h2>
+<div class="quarto-embed-nb-cell">
+<div id="cell-fig-all-rmse" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-all-rmse" class="quarto-figure quarto-figure-left quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-all-rmse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid
+</figcaption>
+<div aria-describedby="fig-all-rmse-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="index_files/figure-html/notebooks-simulation-fig-all-rmse-output-1.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/notebooks-simulation-fig-all-rmse-output-1.png" class="img-fluid figure-img"></a>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-2" href="notebooks/simulation-preview.html#cell-fig-all-rmse">Source: Simulation</a></div>
+<div class="hidden" aria-hidden="true">
+<span class="glightbox-desc lightbox-desc-1">Figure&nbsp;1: Plots of RMSE by sample size when all predictors are active (q-ratio = 3/3) with sample size rules of thumb overlaid</span>
+<span class="glightbox-desc lightbox-desc-2">Figure&nbsp;2: Plots of R-squared by sample size for different q-ratios with sample size rules of thumb overlaid</span>
+<span class="glightbox-desc lightbox-desc-3">Figure&nbsp;3: Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid</span>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
+window.onload = () => {
+  lightboxQuarto.on('slide_before_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    const href = trigger.getAttribute('href');
+    if (href !== null) {
+      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+      if (imgEl !== null) {
+        const srcAttr = imgEl.getAttribute("src");
+        if (srcAttr && srcAttr.startsWith("data:")) {
+          slideConfig.href = srcAttr;
+        }
+      }
+    } 
+  });
+
+  lightboxQuarto.on('slide_after_load', (data) => {
+    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+    if (window.Quarto?.typesetMath) {
+      window.Quarto.typesetMath(slideNode);
+    }
+  });
+
+};
+          </script>
+
+
+
+
+</body></html>
