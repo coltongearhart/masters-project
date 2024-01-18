@@ -234,7 +234,7 @@
 <h2 class="anchored" data-anchor-id="simulation-1">Simulation</h2>
 <section id="setup" class="level3">
 <h3 class="anchored" data-anchor-id="setup">Setup</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div id="1f1c0d4f-ddbb-4c76-b6a9-f10cba098069" class="cell" data-message="false">
+<div class="cell-container"><div class="cell-decorator"><pre>In [1]:</pre></div><div id="eab5f114-c445-4bc2-bee1-aeac84417e5b" class="cell" data-message="false">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>library(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -272,14 +272,14 @@ The following object is masked from 'package:tidyr':
 ✖ magrittr::set_names() masks purrr::set_names()
 ✖ yardstick::spec()     masks readr::spec()
 ✖ recipes::step()       masks stats::step()
-• Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
+• Use suppressPackageStartupMessages() to eliminate package startup messages</code></pre>
 </div>
 </div></div>
 </section>
 <section id="correlation-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="correlation-matrix">Correlation matrix</h3>
 <p>Define functions to generate correlation matrix.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="ab1719b2-3350-431c-b6f8-32b06286628c" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [2]:</pre></div><div id="39993deb-d938-4411-a8a9-733f72436d8e" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function to generate correlation matrix of Xs</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>make_corr_x <span class="op">&lt;-</span> function(mc <span class="op">=</span> c(<span class="st">"ind"</span>, <span class="st">"low"</span>, <span class="st">"med-low"</span>, <span class="st">"med"</span>), p <span class="op">=</span> <span class="dv">2</span>) {</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -328,7 +328,7 @@ The following object is masked from 'package:tidyr':
 <section id="simulation-data" class="level3">
 <h3 class="anchored" data-anchor-id="simulation-data">Simulation data</h3>
 <p>Define function to generate simulation dataset.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="fc10f38d-0fb8-4cfb-8aaa-bf72974faafe" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [3]:</pre></div><div id="7a93674d-92b8-4f04-b6e9-5d157a0d1584" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define function to simulate response and covariates</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>make_sim_data <span class="op">&lt;-</span> function(n <span class="op">=</span> <span class="dv">100</span>, p <span class="op">=</span> <span class="dv">20</span>, q <span class="op">=</span> <span class="dv">10</span>, b <span class="op">=</span> <span class="fl">0.2</span>, sigma <span class="op">=</span> <span class="dv">1</span>, mc <span class="op">=</span> c(<span class="st">"ind"</span>, <span class="st">"low"</span>, <span class="st">"med-low"</span>, <span class="st">"med"</span>)){</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -357,7 +357,7 @@ The following object is masked from 'package:tidyr':
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="60af1387-2553-4af4-8eff-cf7ffb63ee97" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [4]:</pre></div><div id="ee6795a2-173b-4c6f-9dc0-6277c4eeb9c4" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># test function</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>tmp_data <span class="op">&lt;-</span> make_sim_data(n <span class="op">=</span> <span class="dv">1000</span>, p <span class="op">=</span> <span class="dv">10</span>, q <span class="op">=</span> <span class="dv">5</span>, b <span class="op">=</span> <span class="fl">0.2</span>, sigma <span class="op">=</span> <span class="dv">1</span>, mc <span class="op">=</span> <span class="st">"med"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
@@ -366,14 +366,14 @@ The following object is masked from 'package:tidyr':
 <h3 class="anchored" data-anchor-id="cross-validation">Cross-validation</h3>
 <p>Define function to perform <span class="math inline">\(k\)</span>-fold cross-validation: fit models on analysis data and predict for assessment data.</p>
 <p>Then summarize each folds with the prediction measures.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="9ff883a4-8b51-4a1f-89be-55caf37562e1" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [5]:</pre></div><div id="d3134d36-6c2f-45e2-a891-0aeeb7d67cbd" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for a single iteration</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># perform 5-fold cross validation</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># split data into 5 folds</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>kfolds <span class="op">&lt;-</span> rsample::vfold_cv(data <span class="op">=</span> tmp_data, v <span class="op">=</span> <span class="dv">5</span>, repeats <span class="op">=</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="237011ca-5e62-4d88-87df-ff20a8b5f3a3" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [6]:</pre></div><div id="609281e1-8baf-4646-ba3c-2ff670cd2c68" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># function to:</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) fit model on analysis data</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) make predictions on holdout data</span></span>
@@ -393,7 +393,7 @@ The following object is masked from 'package:tidyr':
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="39894f43-e240-43e2-accf-ed79d3311e5f" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div id="d65847e7-0f2e-4d04-a967-b08e85664c34" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit models for k-fold cross validation</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>kfolds$preds <span class="op">&lt;-</span> kfolds$splits <span class="op">%&gt;%</span> <span class="bu">map</span>(holdout_results, formula(y <span class="op">~</span> <span class="op">-</span><span class="dv">1</span> <span class="op">+</span> .))</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -412,7 +412,7 @@ The following object is masked from 'package:tidyr':
 <section id="set-paramaters" class="level3">
 <h3 class="anchored" data-anchor-id="set-paramaters">Set paramaters</h3>
 <p>Setup simulation structure.</p>
-<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="f1f2ed3d-71dc-45d6-92f9-9eaea3351db4" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div id="c2e1c781-c2dc-46f7-b6e2-1061138345ae" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize simulation settings with repeated iterations</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -&gt; first the parameters of interest (constants are specified later in simulation)</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -&gt; create all combos (+ iterations)</span></span>
@@ -448,7 +448,7 @@ The following object is masked from 'package:tidyr':
 </section>
 <section id="run-simulation" class="level3">
 <h3 class="anchored" data-anchor-id="run-simulation">Run simulation</h3>
-<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="8998bd6c-19be-4158-a970-b47ada237fc0" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div id="b425ffd6-e0c8-4a84-833c-b25408f0a0a1" class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># run simulation</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>tictoc::tic()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -498,7 +498,7 @@ The following object is masked from 'package:tidyr':
 </section>
 <section id="results" class="level2">
 <h2 class="anchored" data-anchor-id="results">Results</h2>
-<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="1c866920-c67a-4989-af1d-14f762b9c031" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div id="8da089d0-d25e-4ba2-a235-95b14d049e16" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create results dataframe</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -&gt; select simulation identifiers then unnest</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -&gt; aggregate over iterations</span></span>
@@ -510,7 +510,7 @@ The following object is masked from 'package:tidyr':
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>save(results, <span class="bu">file</span> <span class="op">=</span> <span class="st">"files/results.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="a295040d-6dc6-4a26-84e7-d1d213cd0b51" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [11]:</pre></div><div id="b32337c9-3ad5-422f-9549-c463f1ddb383" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>load(<span class="st">"/Users/coltongearhart/Desktop/masters-project/files/results.RData"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># set rules and the corresponding sample sizes</span></span>
@@ -563,7 +563,7 @@ Figure&nbsp;1: Plots of RMSE by sample size for different q-ratios with sample s
 </div>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="511ce894-7f17-4686-93e5-a7119173368a" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [13]:</pre></div><div id="8d7c2db1-f56e-4d2d-a89d-955376dcb4ca" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># focused (and zoomed) rmse plot</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -&gt; just using all active cause no q-ratio effect</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>p_rmse <span class="op">&lt;-</span> results <span class="op">%&gt;%</span> </span>
@@ -603,7 +603,7 @@ Figure&nbsp;1: Plots of RMSE by sample size for different q-ratios with sample s
 2   300              1.01</code></pre>
 </div>
 </div></div>
-<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="032d55a4-8648-4e29-a019-7d3fda2be961" class="cell">
+<div class="cell-container"><div class="cell-decorator"><pre>In [14]:</pre></div><div id="201dedf9-233f-4950-8581-f3d99c437772" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ggsave(<span class="st">"files/plot-rmse-focused.png"</span>, p_rmse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [15]:</pre></div><div id="cell-fig-r2-focused" class="cell">
@@ -1034,7 +1034,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom"});
+</script>  </div> <!-- /content -->  <script>var lightboxQuarto = GLightbox({"loop":false,"closeEffect":"zoom","descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
