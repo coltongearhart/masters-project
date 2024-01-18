@@ -8,6 +8,8 @@ author: Colton Gearhart
 ### Setup
 
 ```{r}
+#| warning: false
+#| message: false
 
 # load packages
 library(tidyverse)
