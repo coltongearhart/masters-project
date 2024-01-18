@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="presentation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tabby.min.js"></script>
+<script src="presentation_files/libs/quarto-html/popper.min.js"></script>
+<script src="presentation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="presentation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="presentation_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="presentation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.4.545">
+
+  <meta name="author" content="Colton Gearhart">
+  <meta name="dcterms.date" content="2024-01-18">
+  <title>Master’s Project – Abridged</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="presentation_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="presentation_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Master’s Project – Abridged</h1>
+  <p class="subtitle">Sample size rules of thumb for out-of-sample prediction quality in multiple regression</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Colton Gearhart 
+</div>
+</div>
+</div>
+
+  <p class="date">2024-01-18</p>
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#/introduction" id="/toc-introduction">Introduction</a></li>
+<li><a href="#/background-and-literature-review-for-sample-size-determinations" id="/toc-background-and-literature-review-for-sample-size-determinations">Background and literature review for sample size determinations</a></li>
+<li><a href="#/methods" id="/toc-methods">Methods</a></li>
+<li><a href="#/simulation" id="/toc-simulation">Simulation</a></li>
+<li><a href="#/results-and-conclusions" id="/toc-results-and-conclusions">Results and conclusions</a></li>
+</ul>
+</nav>
+</section>
+<section>
+<section id="introduction" class="title-slide slide level1 center">
+<h1>Introduction</h1>
+
+</section>
+<section id="importance-of-sample-size-analyses" class="slide level2">
+<h2>Importance of sample size analyses</h2>
+<ul>
+<li><p>When planning a study, determining how large a sample is needed is an important step.</p>
+<ul>
+<li><p><span class="math inline">\(n\)</span> too large <span class="math inline">\(\rightarrow\)</span> waste of resources,</p></li>
+<li><p><span class="math inline">\(n\)</span> too small <span class="math inline">\(\rightarrow\)</span> less confident in results.</p></li>
+</ul></li>
+<li><p>Many things to consider when choosing the sample size; it’s as simple as a large <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li><p>Statisticians know more (representative) data is better.</p></li>
+<li><p>But this ignores other considerations, such as ethics and availability of resources.</p></li>
+<li><p>Data collection comes at a cost, whether that be time, money or computation time.</p></li>
+</ul></li>
+<li><p>All of these considerations are necessary, but they don’t address the statistical implications of sample size selection in terms of quality of the results.</p></li>
+</ul>
+</section>
+<section id="multiple-linear-regression-mlr-and-prediction" class="slide level2">
+<h2>Multiple linear regression (MLR) and prediction</h2>
+<ul>
+<li><p>Currently.</p>
+<ul>
+<li><p>Growing emphasis in prediction and data science.</p></li>
+<li><p>Regression is the first quantitative method introduced in “An Introduction to Statistical Learning with applications in R” <span class="citation" data-cites="james2021">(<a href="#/references" role="doc-biblioref" onclick="">James et al. 2021</a>)</span>. It serves as the foundation for many other methods.</p></li>
+<li><p>Techniques such as cross-validation are already frequently used to assess prediction quality and select models.</p></li>
+</ul></li>
+<li><p>Future?</p>
+<ul>
+<li><p>Can the sample size rules of thumb suggested for sizing studies for hypothesis testing also be used to help size a study for prediction?</p></li>
+<li><p>This is the main goal of this research.</p></li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="background-and-literature-review-for-sample-size-determinations" class="title-slide slide level1 center">
+<h1>Background and literature review for sample size determinations</h1>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<ul>
+<li><p>Researchers often use sample size calculations related to a power analysis as guidelines for sizing their studies.</p></li>
+<li><p>Another popular type of recommendations for sample size comes from conventional rules of thumb (RoT).</p></li>
+</ul>
+</section>
+<section id="standard-power-analyses" class="slide level2">
+<h2>Standard power analyses</h2>
+<ul>
+<li><p>Formal sample size calculations are performed using an appropriate distribution, such as the non-central t or F distributions.</p></li>
+<li><p>Theoretical results for the minimum sample size <span class="math inline">\(n\)</span> that achieves some power can be found for the simplest case: <span class="math inline">\(H_0: \beta_1 = 0\)</span> vs <span class="math inline">\(H_1: \beta_1 \ne 0\)</span>.</p></li>
+<li><p>Probability calculations involve a non-centrality parameter (ncp) <span class="math inline">\(\lambda\)</span>, which represents the effect size.</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/power.png"></p>
+<figcaption>http://www.psychology.emory.edu</figcaption>
+</figure>
+</div>
+</section>
+<section id="standard-power-analyses-1" class="slide level2">
+<h2>Standard power analyses</h2>
+<ul>
+<li><p>Hard to generalize to <span class="math inline">\(p\)</span> predictors.</p>
+<ul>
+<li><p>It is easy to think about effect size for single predictor, but harder for <span class="math inline">\(p\)</span> predictors.</p></li>
+<li><p>Explicit solutions become very hard, if not impossible to obtain.</p></li>
+</ul></li>
+<li><p>Why is effect size so important?</p>
+<ul>
+<li>When the true (unknown) <span class="math inline">\(\rho^2\)</span> is small, if the anticipated is even slightly off, there can be major disparity regarding sample size recommendation <span class="citation" data-cites="knofczynski2007">(<a href="#/references" role="doc-biblioref" onclick="">Knofczynski and Mundfrom 2007</a>)</span>.</li>
+</ul></li>
+<li><p>So, researchers often search for other ways to help size their study.</p></li>
+</ul>
+</section>
+<section id="overview-of-prediction-based-sample-size-recommendations" class="slide level2">
+<h2>Overview of prediction based sample size recommendations</h2>
+<ul>
+<li><p>Less developed in literature.</p>
+<ul>
+<li>Relative to the amount and diversity of literature for power-based methods, sample size determination where the main goal is prediction is nowhere near as comprehensive.</li>
+</ul></li>
+<li><p>Consistent general findings.</p>
+<ul>
+<li><p><span class="math inline">\(N_{\text{prediction}} \gg N_{\text{power}}\)</span> <span class="citation" data-cites="maxwell2000">(<a href="#/references" role="doc-biblioref" onclick="">Maxwell 2000</a>)</span>.</p></li>
+<li><p>Adequate power <span class="math inline">\(\nRightarrow\)</span> generalizability.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="two-methods" class="slide level2">
+<h2>Two methods</h2>
+<ul>
+<li><p>Population model similarity</p>
+<ul>
+<li><p><span class="citation" data-cites="knofczynski2007">Knofczynski and Mundfrom (<a href="#/references" role="doc-biblioref" onclick="">2007</a>)</span> provided guidelines for <span class="math inline">\(N\)</span>s that yield “sample regression models that predict similarly to the population regression model”.</p></li>
+<li><p>“Similar” was defined as a strong enough correlation between <span class="math inline">\(\hat{Y}_{\text{pop}} = X \beta\)</span> and <span class="math inline">\(\hat{Y}_{\text{sample}} = X \hat{\beta}\)</span> (i.e.&nbsp;<span class="math inline">\(r\)</span> &gt; 0.92 or 0.98) .</p></li>
+<li><p>Results showed that populations with smaller correlations between the <span class="math inline">\(Y\)</span> and <span class="math inline">\(\mathbf{X}\)</span> requires larger sample sizes for good predictions.</p></li>
+</ul></li>
+<li><p>The PEAR method</p>
+<ul>
+<li><p><span class="citation" data-cites="barcikowski2012">Barcikowski and Brooks (<a href="#/references" role="doc-biblioref" onclick="">2012</a>)</span> proposed the Precision Efficacy Analysis for Regression (PEAR) method.</p></li>
+<li><p>Primary goal was to make sure that sample regression models are generalizable to future samples.</p></li>
+<li><p>Strategy was to limit the amount of cross-validity shrinkage <span class="math inline">\(\epsilon = R^2 - R_C^2\)</span> by .</p></li>
+</ul>
+<p><!-- -   $R^2_C$ is a measure of the effectiveness of a sample regression model when applied to other samples [@herzberg]. --></p>
+<p><!-- -   This quantity $\epsilon$ can be interpreted as "the difference between a regression model's apparent validity, as measured by $R^2$, and its actual predictive cross-validity" [@darlington1990]. --></p>
+<ul>
+<li>Most recent results suggest that the PEAR method is effective for providing regression coefficients with smaller standard errors (i.e.&nbsp;more stable estimates of coefficients).</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="methods" class="title-slide slide level1 center">
+<h1>Methods</h1>
+
+</section>
+<section id="overview-1" class="slide level2">
+<h2>Overview</h2>
+<ul>
+<li><p>The goal of this paper is to study sample size recommendations for prediction in MLR.</p></li>
+<li><p>This is investigated using a simulation experiment where 5-fold cross validation was implemented to measure the out-of-sample prediction performance of models based on various sample sizes.</p></li>
+<li><p>This strategy more closely resembles what is done in practice, where a single sample needs to be used for both training and testing, rather than two distinct samples.</p></li>
+<li><p>Models were fit in the context of observational studies.</p></li>
+</ul>
+</section>
+<section id="conditions-studied-and-data-simulation-process" class="slide level2 smaller">
+<h2>Conditions studied and data simulation process</h2>
+<ul>
+<li>The main factor of interest for the simulation described next was the sample sizes used for the 5-fold cross validation procedure.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/sample-size-rot.png"></p>
+<figcaption>Rules of thumb for multiple regression</figcaption>
+</figure>
+</div>
+<ul>
+<li><p>Three population characteristics were manipulated to cover a wide range of validating scenarios.</p>
+<ul>
+<li><p>The total number of predictors <span class="math inline">\(p = 3, 6, 9\)</span>.</p></li>
+<li><p>The proportion of active predictors relative to <span class="math inline">\(p\)</span>, so-called <span class="math inline">\(q\)</span>-ratio = 1/3, 2/3 and 3/3.</p></li>
+<li><p>The degree of multicollinearity between the <span class="math inline">\(X\)</span>s. Without loss of generality, correlation matrices were used when specifying the variance-covariance parameter <span class="math inline">\(\Sigma_X\)</span> of the multivariate normal distribution used to generate the design matrix. The levels were defined as follows: <span class="math inline">\(\rho_{XX} \sim \text{Uniform}\)</span> with the corresponding bounds (ind = 0, low = <span class="math inline">\((0, 0,2]\)</span>, medium-low = <span class="math inline">\([0.2, 0.4]\)</span>, medium = <span class="math inline">\([0.4, 0.6]\)</span>).</p></li>
+</ul></li>
+<li><p>In total, all possible combinations of the sample sizes, number of predictors, number of active predictors, and degree of multicollinearity defined a set of 36 unique validation scenarios for each sample size <span class="math inline">\(n\)</span> (<span class="math inline">\((p \times q\text{-ratio} \times \rho_{XX}) = (3 \times 3 \times 4) = 36\)</span>).</p></li>
+</ul>
+</section>
+<section id="conditions-studied-and-data-simulation-process-1" class="slide level2">
+<h2>Conditions studied and data simulation process</h2>
+<ul>
+<li>All of the previous can be summarized with the following population model:</li>
+</ul>
+<p><span id="eq-pop-model"><span class="math display">\[Y_i = \beta_1 X_1 + \cdots + \beta_p X_p + \epsilon_i \qquad(1)\]</span></span></p>
+<p>where <span class="math inline">\(X \sim \text{MVN}_p(\mu_X = \boldsymbol{0}, \rho_{XX})\)</span>, <span class="math inline">\(\beta_j = 0.2\)</span> (<span class="math inline">\(j = 1, \ldots, q\)</span>) remaining <span class="math inline">\(\beta_j = 0\)</span> (<span class="math inline">\(j = q+1, \ldots, p\)</span>), and <span class="math inline">\(\epsilon_i \overset{iid}\sim \text{N}(0, \sigma^2 = 1)\)</span>.</p>
+</section>
+<section id="predictions-evaluated" class="slide level2">
+<h2>Predictions evaluated</h2>
+<ul>
+<li><p>During the cross-validation procedure, each model was trained, and predictions were made on the holdout set of observations.</p></li>
+<li><p>Two measures were used:</p></li>
+</ul>
+<p><span id="eq-rmse"><span class="math display">\[\text{RMSE} = \bigg[\frac{1}{n_{\text{test}}} \sum^{n_{\text{test}}}_{i = 1} (y_{\text{new, }i} - \hat{y}_{\text{new, }i})^2\bigg]^{1/2} \qquad(2)\]</span></span></p>
+<p><span id="eq-oos-r2"><span class="math display">\[R^2_{\text{test}} = \text{Cor}(y_{\text{new}}, \hat{y}_{\text{new}})^2 \qquad(3)\]</span></span></p>
+</section>
+<section id="implementation-details" class="slide level2 smaller">
+<h2>Implementation details</h2>
+<ul>
+<li><p>Below are the steps used to conduct the Monte Carlo simulation within R; this outlined procedure was performed for each iteration of the simulation (in total, 500 iterations were run for each scenario).</p></li>
+<li><p>Step 1) Get sample of data.</p>
+<ol type="a">
+<li><p>For a particular number of predictors <span class="math inline">\(p\)</span> and level of multicollinearity, generate the correlation matrix.</p></li>
+<li><p>Once a proper matrix is obtained, simulate <span class="math inline">\(n\)</span> observations for <span class="math inline">\(X\)</span> utilizing <span class="math inline">\(\rho_{XX}\)</span>.</p></li>
+<li><p>Set coefficients for <span class="math inline">\(q\)</span> active predictors to a constant, arbitrarily chosen value of <span class="math inline">\(\beta_j = 0.2, \hspace{10pt} j = 1, \dots, q\)</span> and non active predictor coefficients to zero <span class="math inline">\(\beta_j = 0, \hspace{10pt} j = q + 1, \dots, p\)</span>. Then simulate the response variable <span class="math inline">\(Y\)</span> for each of the <span class="math inline">\(n\)</span> observations according to the population model in <a href="#/conditions-studied-and-data-simulation-process-1" class="quarto-xref">Equation&nbsp;1</a>.</p></li>
+</ol></li>
+<li><p>Step 2) Perform 5-fold cross validation.</p>
+<ol type="a">
+<li><p>Partition sample data from step 1 into 5 groups (aka folds).</p></li>
+<li><p>Fit a sample MLR model using only data from four of the folds (e.g.&nbsp;folds 1 - 4).</p></li>
+<li><p>Using the regression equation from the above model, obtain the predicted values for observations in the fold that was held out (in this example, fold 5).</p></li>
+<li><p>Calculate the two accuracy measures described in <a href="#/predictions-evaluated" class="quarto-xref">Equation&nbsp;2</a> and <a href="#/predictions-evaluated" class="quarto-xref">Equation&nbsp;3</a>.</p></li>
+</ol></li>
+</ul>
+<ol start="5" type="a">
+<li><p>Repeat steps b - d until each fold has been used as the testing set exactly once.</p></li>
+<li><p>Average the accuracy measures over the 5 folds.</p></li>
+</ol>
+<ul>
+<li><p>Step 3) Go through each scenario.</p>
+<ul>
+<li>Repeat steps 1 – 2, each time using a different combination of the manipulated factors (i.e.&nbsp;number of predictors, number of active predictors, degree of multicollinearity and sample size). In other words, cycle through all of the 36 validation scenarios for each sample size. All of the calculated accuracy measures from this process make up the results for a single iteration of the simulation.</li>
+</ul></li>
+<li><p>Once the entire simulation procedure was complete (steps 1 – 3, for each iteration), accuracy measures were summarized over the 500 iterations, within each unique scenario.</p></li>
+</ul>
+</section></section>
+<section>
+<section id="simulation" class="title-slide slide level1 center">
+<h1>Simulation</h1>
+
+</section>
+<section id="demo-simulation-structure" class="slide level2">
+<h2>Demo simulation structure</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="1-28|5-10|17-23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="do">### ---- Setup simulation structure ----</span></span>
+<span id="cb1-2"><a href=""></a></span>
+<span id="cb1-3"><a href=""></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: demo is for only 2 iterations and fewer sample sizes</span></span>
+<span id="cb1-4"><a href=""></a></span>
+<span id="cb1-5"><a href=""></a><span class="co"># initialize simulation settings with repeated iterations</span></span>
+<span id="cb1-6"><a href=""></a>params_i <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">n =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">30</span>, <span class="at">to =</span> <span class="dv">60</span>, <span class="at">by =</span> <span class="dv">10</span>),</span>
+<span id="cb1-7"><a href=""></a>                        <span class="at">p =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>),</span>
+<span id="cb1-8"><a href=""></a>                        <span class="at">q_ratio =</span> <span class="fu">c</span>(<span class="st">"1/3"</span>, <span class="st">"2/3"</span>, <span class="st">"3/3"</span>),</span>
+<span id="cb1-9"><a href=""></a>                        <span class="at">mc =</span> <span class="fu">c</span>(<span class="st">"ind"</span>, <span class="st">"low"</span>, <span class="st">"med-low"</span>, <span class="st">"med"</span>),</span>
+<span id="cb1-10"><a href=""></a>                        <span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href=""></a>  data.frame <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href=""></a>  <span class="fu">group_by</span>(n, p, q_ratio, mc) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-13"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">sim_id =</span> <span class="fu">cur_group_id</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-14"><a href=""></a>  ungroup <span class="sc">%&gt;%</span> </span>
+<span id="cb1-15"><a href=""></a>  <span class="fu">arrange</span>(sim_id, i)</span>
+<span id="cb1-16"><a href=""></a></span>
+<span id="cb1-17"><a href=""></a><span class="co"># calculate specifics and organize</span></span>
+<span id="cb1-18"><a href=""></a>params_i <span class="sc">%&lt;&gt;%</span> <span class="fu">mutate</span>(</span>
+<span id="cb1-19"><a href=""></a>  <span class="at">q =</span> <span class="fu">case_when</span>(</span>
+<span id="cb1-20"><a href=""></a>    q_ratio <span class="sc">==</span> <span class="st">"1/3"</span> <span class="sc">~</span> p<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb1-21"><a href=""></a>    q_ratio <span class="sc">==</span> <span class="st">"2/3"</span> <span class="sc">~</span> <span class="dv">2</span><span class="sc">*</span>p<span class="sc">/</span><span class="dv">3</span>,</span>
+<span id="cb1-22"><a href=""></a>    q_ratio <span class="sc">==</span> <span class="st">"3/3"</span> <span class="sc">~</span> p</span>
+<span id="cb1-23"><a href=""></a>  ),</span>
+<span id="cb1-24"><a href=""></a>  <span class="at">mc =</span> <span class="fu">as.character</span>(mc) <span class="co"># needed for match.args()</span></span>
+<span id="cb1-25"><a href=""></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-26"><a href=""></a>  <span class="fu">select</span>(sim_id, i, n, p, q_ratio, q, mc)</span>
+<span id="cb1-27"><a href=""></a></span>
+<span id="cb1-28"><a href=""></a>params_i <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> kable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">sim_id</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">i</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">q_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">q</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">ind</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">ind</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">low</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">low</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">med-low</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">med-low</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">med</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">med</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2/3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">ind</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2/3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">ind</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># nest simulation settings into dataframe</span></span>
+<span id="cb2-2"><a href=""></a>simulation <span class="ot">&lt;-</span> params_i <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href=""></a>  <span class="fu">nest</span>(<span class="at">.by =</span> <span class="fu">c</span>(sim_id, i)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href=""></a>  <span class="fu">rename</span>(<span class="at">params =</span> data)</span>
+<span id="cb2-5"><a href=""></a>simulation <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   sim_id     i params          
+    &lt;int&gt; &lt;int&gt; &lt;list&gt;          
+ 1      1     1 &lt;tibble [1 × 5]&gt;
+ 2      1     2 &lt;tibble [1 × 5]&gt;
+ 3      2     1 &lt;tibble [1 × 5]&gt;
+ 4      2     2 &lt;tibble [1 × 5]&gt;
+ 5      3     1 &lt;tibble [1 × 5]&gt;
+ 6      3     2 &lt;tibble [1 × 5]&gt;
+ 7      4     1 &lt;tibble [1 × 5]&gt;
+ 8      4     2 &lt;tibble [1 × 5]&gt;
+ 9      5     1 &lt;tibble [1 × 5]&gt;
+10      5     2 &lt;tibble [1 × 5]&gt;</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="generate-and-split-data" class="slide level2">
+<h2>Generate and split data</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb4" data-code-line-numbers="1-13|6|11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="do">### ---- Generate and split data ----</span></span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a><span class="co"># generate data according to each simulation setting</span></span>
+<span id="cb4-4"><a href=""></a><span class="co"># -&gt; specify constant values in simulation (non-variable settings)</span></span>
+<span id="cb4-5"><a href=""></a>simulation<span class="sc">$</span>data <span class="ot">&lt;-</span> simulation<span class="sc">$</span>params <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="cf">function</span>(params) {</span>
+<span id="cb4-6"><a href=""></a>  params <span class="sc">%$%</span> <span class="fu">make_sim_data</span>(n, p, q, mc, <span class="at">b =</span> <span class="fl">0.2</span>, <span class="at">sigma =</span> <span class="dv">1</span>)</span>
+<span id="cb4-7"><a href=""></a>})</span>
+<span id="cb4-8"><a href=""></a></span>
+<span id="cb4-9"><a href=""></a><span class="co"># split each dataset into 5 folds</span></span>
+<span id="cb4-10"><a href=""></a>simulation<span class="sc">$</span>kfolds <span class="ot">&lt;-</span> simulation<span class="sc">$</span>data <span class="sc">%&gt;%</span> </span>
+<span id="cb4-11"><a href=""></a>  <span class="fu">map</span>(\(df) rsample<span class="sc">::</span><span class="fu">vfold_cv</span>(df, <span class="at">v =</span> <span class="dv">5</span>, <span class="at">repeats =</span> <span class="dv">1</span>))</span>
+<span id="cb4-12"><a href=""></a></span>
+<span id="cb4-13"><a href=""></a>simulation <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   sim_id     i params           data          kfolds         
+    &lt;int&gt; &lt;int&gt; &lt;list&gt;           &lt;list&gt;        &lt;list&gt;         
+ 1      1     1 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 2      1     2 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 3      2     1 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 4      2     2 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 5      3     1 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 6      3     2 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 7      4     1 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 8      4     2 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+ 9      5     1 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;
+10      5     2 &lt;tibble [1 × 5]&gt; &lt;df [30 × 4]&gt; &lt;vfold [5 × 2]&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>simulation<span class="sc">$</span>data[<span class="dv">1</span>] <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+              y          x1           x2         x3
+1   1.771636995 -0.60060948  1.004117234  1.1208559
+2   1.080453589  1.71742037 -0.498604680  1.9034893
+3  -0.439603041 -0.67233611  0.368570145 -0.5941547
+4   0.012531691 -0.10818769 -0.511318724  2.7467608
+5   0.188503610  1.94410911  0.272513817  0.3915868
+6  -1.117744663  0.56343057 -1.898344974  0.1837951
+7  -1.328565849 -2.08427794 -1.736415768  0.9266671
+8  -1.398029137 -0.16058698 -0.793035317 -0.2868051
+9   0.076994923  2.39230824  0.148995799  0.2913957
+10  0.461136795  0.73760257 -0.120516712 -0.1986517
+11  2.033517703 -0.89680980 -0.560080455  0.8549133
+12  0.002691725 -0.39707402  0.054257879  1.2541894
+13 -2.099940124 -0.50749101 -0.122068368 -0.1773304
+14 -2.221569145 -0.55517093  0.479765918  0.2649020
+15 -0.156567166 -0.03130252 -1.190362666 -0.7060817
+16 -0.365173193 -0.03435185  0.684009707 -1.8611297
+17  0.470720205  0.15144015  1.197999735  0.4211744
+18  0.006665128  0.28500269  0.404945130 -1.6929284
+19 -1.591879652 -0.20989675  0.617194212  0.9271298
+20  1.553430189  1.78255998  1.271476806 -1.5711735
+21 -0.483769486 -0.39100938 -0.753245352  1.4633528
+22  0.950644258 -0.65759382  0.064148074 -1.7498320
+23  0.780485941  0.44532326  0.054012595 -1.4049745
+24  0.922943305 -0.40154305  0.267704964 -1.4543827
+25 -2.001831575  0.99452248  0.724806462 -1.6002685
+26 -1.416187969  0.09130585  0.582921699  0.9069383
+27 -0.112318771 -0.81289658  0.621212873  0.9641083
+28 -1.451495765 -0.93329195  1.894197660 -0.1530169
+29  0.651787866 -0.21593334 -0.002806907 -0.1714670
+30  0.692157328 -1.22314311 -0.680957836  0.7658491</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="run-simulation" class="slide level2">
+<h2>Run simulation</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="1-27|10|12-16|18-23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="do">### ---- Run simulation ----</span></span>
+<span id="cb8-2"><a href=""></a></span>
+<span id="cb8-3"><a href=""></a><span class="co"># loop through each iteration to work on each set of kfolds</span></span>
+<span id="cb8-4"><a href=""></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(simulation)) {</span>
+<span id="cb8-5"><a href=""></a>  </span>
+<span id="cb8-6"><a href=""></a>  <span class="co"># extract resample dataframe</span></span>
+<span id="cb8-7"><a href=""></a>  kfolds <span class="ot">=</span> simulation[j, <span class="st">"kfolds"</span>]<span class="sc">$</span>kfolds[[<span class="dv">1</span>]]</span>
+<span id="cb8-8"><a href=""></a>  </span>
+<span id="cb8-9"><a href=""></a>  <span class="co"># fit models for k-fold cross-validation with UDF</span></span>
+<span id="cb8-10"><a href=""></a>  preds <span class="ot">=</span> kfolds<span class="sc">$</span>splits <span class="sc">%&gt;%</span> <span class="fu">map</span>(\(split) <span class="fu">holdout_results</span>(split, <span class="fu">formula</span>(y <span class="sc">~</span> <span class="sc">-</span><span class="dv">1</span> <span class="sc">+</span> .)))</span>
+<span id="cb8-11"><a href=""></a>  </span>
+<span id="cb8-12"><a href=""></a>  <span class="co"># calculate predictions for each fold</span></span>
+<span id="cb8-13"><a href=""></a>  results <span class="ot">=</span> preds <span class="sc">%&gt;%</span> <span class="fu">map</span>(<span class="cf">function</span>(df) {</span>
+<span id="cb8-14"><a href=""></a>    <span class="fu">data.frame</span>(<span class="at">rmse =</span> yardstick<span class="sc">::</span><span class="fu">rmse_vec</span>(<span class="at">truth =</span> df<span class="sc">$</span>y,<span class="at">estimate =</span> df<span class="sc">$</span><span class="st">`</span><span class="at">.fitted</span><span class="st">`</span>),</span>
+<span id="cb8-15"><a href=""></a>               <span class="at">rsq =</span> yardstick<span class="sc">::</span><span class="fu">rsq_vec</span>(<span class="at">truth =</span> df<span class="sc">$</span>y, <span class="at">estimate =</span> df<span class="sc">$</span><span class="st">`</span><span class="at">.fitted</span><span class="st">`</span>))</span>
+<span id="cb8-16"><a href=""></a>  })</span>
+<span id="cb8-17"><a href=""></a>  </span>
+<span id="cb8-18"><a href=""></a>  <span class="co"># summarize cross-validation results</span></span>
+<span id="cb8-19"><a href=""></a>  simulation[j, <span class="st">"results_cv"</span>] <span class="ot">&lt;-</span> <span class="fu">nest</span>(</span>
+<span id="cb8-20"><a href=""></a>    results <span class="sc">%&gt;%</span> </span>
+<span id="cb8-21"><a href=""></a>    bind_rows <span class="sc">%&gt;%</span> </span>
+<span id="cb8-22"><a href=""></a>    <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), mean))</span>
+<span id="cb8-23"><a href=""></a>  )</span>
+<span id="cb8-24"><a href=""></a>  </span>
+<span id="cb8-25"><a href=""></a>}</span>
+<span id="cb8-26"><a href=""></a></span>
+<span id="cb8-27"><a href=""></a>simulation <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(params, data, kfolds)) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 3
+   sim_id     i results_cv      
+    &lt;int&gt; &lt;int&gt; &lt;list&gt;          
+ 1      1     1 &lt;tibble [1 × 2]&gt;
+ 2      1     2 &lt;tibble [1 × 2]&gt;
+ 3      2     1 &lt;tibble [1 × 2]&gt;
+ 4      2     2 &lt;tibble [1 × 2]&gt;
+ 5      3     1 &lt;tibble [1 × 2]&gt;
+ 6      3     2 &lt;tibble [1 × 2]&gt;
+ 7      4     1 &lt;tibble [1 × 2]&gt;
+ 8      4     2 &lt;tibble [1 × 2]&gt;
+ 9      5     1 &lt;tibble [1 × 2]&gt;
+10      5     2 &lt;tibble [1 × 2]&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>simulation<span class="sc">$</span>results_cv[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 1 × 2
+   rmse   rsq
+  &lt;dbl&gt; &lt;dbl&gt;
+1  1.29 0.405</code></pre>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="results-and-conclusions" class="title-slide slide level1 center">
+<h1>Results and conclusions</h1>
+
+</section>
+<section id="summarize-results" class="slide level2">
+<h2>Summarize results</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb12" data-code-line-numbers="1-9|7-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="do">### ---- Summarize results ----</span></span>
+<span id="cb12-2"><a href=""></a></span>
+<span id="cb12-3"><a href=""></a><span class="co"># create results dataframe</span></span>
+<span id="cb12-4"><a href=""></a>results <span class="ot">&lt;-</span> simulation <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href=""></a>  <span class="fu">select</span>(sim_id, i, params, results_cv) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href=""></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(params, results_cv)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-7"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">.by =</span> <span class="fu">c</span>(sim_id, n, p, q_ratio, q, mc),</span>
+<span id="cb12-8"><a href=""></a>            <span class="fu">across</span>(<span class="fu">c</span>(rmse, rsq), <span class="fu">list</span>(<span class="at">mean =</span> mean, <span class="at">sd =</span> sd)))</span>
+<span id="cb12-9"><a href=""></a>results <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> kable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<table data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">sim_id</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">q_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">q</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mc</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rmse_mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rmse_sd</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rsq_mean</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rsq_sd</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">ind</td>
+<td style="text-align: right;">1.2723011</td>
+<td style="text-align: right;">0.0220986</td>
+<td style="text-align: right;">0.3219901</td>
+<td style="text-align: right;">0.1179472</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: right;">1.0658717</td>
+<td style="text-align: right;">0.1771781</td>
+<td style="text-align: right;">0.1402697</td>
+<td style="text-align: right;">0.0570686</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">med-low</td>
+<td style="text-align: right;">1.0987802</td>
+<td style="text-align: right;">0.0500894</td>
+<td style="text-align: right;">0.0950452</td>
+<td style="text-align: right;">0.0904093</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">1/3</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">med</td>
+<td style="text-align: right;">1.0251562</td>
+<td style="text-align: right;">0.0442562</td>
+<td style="text-align: right;">0.2526409</td>
+<td style="text-align: right;">0.1271945</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2/3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">ind</td>
+<td style="text-align: right;">0.9245151</td>
+<td style="text-align: right;">0.0276761</td>
+<td style="text-align: right;">0.3211919</td>
+<td style="text-align: right;">0.0492861</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2/3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: right;">1.0543937</td>
+<td style="text-align: right;">0.0370452</td>
+<td style="text-align: right;">0.1983855</td>
+<td style="text-align: right;">0.0587175</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2/3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">med-low</td>
+<td style="text-align: right;">0.9107743</td>
+<td style="text-align: right;">0.0572674</td>
+<td style="text-align: right;">0.1667520</td>
+<td style="text-align: right;">0.0004747</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">2/3</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">med</td>
+<td style="text-align: right;">0.9841009</td>
+<td style="text-align: right;">0.1470488</td>
+<td style="text-align: right;">0.1157385</td>
+<td style="text-align: right;">0.0558235</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">3/3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">ind</td>
+<td style="text-align: right;">0.9790815</td>
+<td style="text-align: right;">0.2312043</td>
+<td style="text-align: right;">0.2728615</td>
+<td style="text-align: right;">0.1983251</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">3/3</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">low</td>
+<td style="text-align: right;">1.0005123</td>
+<td style="text-align: right;">0.2141873</td>
+<td style="text-align: right;">0.2040428</td>
+<td style="text-align: right;">0.1522665</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</section>
+<section id="actual-results" class="slide level2">
+<h2>Actual results</h2>
+<ul>
+<li>The results in the following figures are based on the mean of the respective accuracy measures over the 500 iterations.</li>
+</ul>
+<blockquote>
+<h3 id="rmse">RMSE</h3>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/plot-rmse-focused-annotated.png" style="width:40.0%"></p>
+<figcaption>Plots of RMSE by sample size when all predictors are active (q-ratio = 3/3) with sample size rules of thumb overlaid</figcaption>
+</figure>
+</div>
+</section>
+<section id="actual-results-1" class="slide level2">
+<h2>Actual results</h2>
+<blockquote>
+<h3 id="rmse-1">RMSE</h3>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/fig-all-rmse.png"></p>
+<figcaption>Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid</figcaption>
+</figure>
+</div>
+</section>
+<section id="actual-results-2" class="slide level2">
+<h2>Actual results</h2>
+<blockquote>
+<h3 id="r2_texttest"><span class="math inline">\(R^2_{\text{Test}}\)</span></h3>
+</blockquote>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/fig-r2-focused.png"></p>
+<figcaption>Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid</figcaption>
+</figure>
+</div>
+</section>
+<section id="conclusions" class="slide level2">
+<h2>Conclusions</h2>
+<ul>
+<li><p>Overall, when quantifying quality of predictions with <span class="math inline">\(RMSE\)</span>, results showed only small changes when increasing the sample size from 30 to 300.</p>
+<ul>
+<li>This may be because certain aspects aspects of the simulation process with MLR models were left uncontrolled like some measure of effect size between <span class="math inline">\(Y\)</span> and the set of <span class="math inline">\(X\)</span>s.</li>
+</ul></li>
+<li><p>Based on the implemented scenarios of this simulation, larger sample sizes did not see enough of a benefit in accuracy (i.e.&nbsp;smaller <span class="math inline">\(RMSE\)</span>) to warrant the large increases in <span class="math inline">\(n\)</span>.</p>
+<ul>
+<li>Thus, by default preference would be given to RoT that recommend smaller sample sizes when the goal of a MLR study is to have accurate predictions.</li>
+</ul></li>
+<li><p>Lastly, due to the suspicious pattern, nothing can be gleaned from the results when using out-of-sample <span class="math inline">\(R^2\)</span> as the measure of predictive accuracy.</p></li>
+</ul>
+</section>
+<section id="references" class="slide level2 unnumbered smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-barcikowski2012" class="csl-entry" role="listitem">
+Barcikowski, Robert, and Gordon Brooks. 2012. <span>“The PEAR Method for Sample Sizes in Multiple Linear Regression.”</span> <em>Multiple Linear Regression Viewpoints</em> 38(2).
+</div>
+<div id="ref-james2021" class="csl-entry" role="listitem">
+James, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani. 2021. <em>An Introduction to Statistical Learning</em>. Springer US. <a href="https://doi.org/10.1007/978-1-0716-1418-1">https://doi.org/10.1007/978-1-0716-1418-1</a>.
+</div>
+<div id="ref-knofczynski2007" class="csl-entry" role="listitem">
+Knofczynski, Gregory T., and Daniel Mundfrom. 2007. <span>“Sample Sizes When Using Multiple Linear Regression for Prediction.”</span> <em>Educational and Psychological Measurement</em> 68 (3): 431–42. <a href="https://doi.org/10.1177/0013164407310131">https://doi.org/10.1177/0013164407310131</a>.
+</div>
+<div id="ref-maxwell2000" class="csl-entry" role="listitem">
+Maxwell, Scott E. 2000. <span>“Sample Size and Multiple Regression Analysis.”</span> <em>Psychological Methods</em> 5 (4): 434–58. <a href="https://doi.org/10.1037/1082-989x.5.4.434">https://doi.org/10.1037/1082-989x.5.4.434</a>.
+</div>
+</div>
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="presentation_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="presentation_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="presentation_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="presentation_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1920,
+
+        height: 1080,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

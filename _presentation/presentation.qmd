@@ -1,0 +1,486 @@
+---
+title: "Master's Project -- Abridged"
+subtitle: "Sample size rules of thumb for out-of-sample prediction quality in multiple regression"
+date: last-modified
+author: Colton Gearhart
+toc: true
+toc-depth: 1
+format: 
+  revealjs:
+    slide-number: true
+    width: 1920
+    height: 1080
+    auto-stretch: false
+editor: source
+bibliography: references.bib
+---
+
+# Introduction
+
+## Importance of sample size analyses
+
+-   When planning a study, determining how large a sample is needed is an important step.
+
+    -   $n$ too large $\rightarrow$ waste of resources,
+
+    -   $n$ too small $\rightarrow$ less confident in results.
+
+-   Many things to consider when choosing the sample size; it's as simple as a large $n$.
+
+    -   Statisticians know more (representative) data is better.
+
+    -   But this ignores other considerations, such as ethics and availability of resources.
+
+    -   Data collection comes at a cost, whether that be time, money or computation time.
+
+-   All of these considerations are necessary, but they don't address the statistical implications of sample size selection in terms of quality of the results.
+
+## Multiple linear regression (MLR) and prediction
+
+-   Currently.
+
+    -   Growing emphasis in prediction and data science.
+
+    -   Regression is the first quantitative method introduced in "An Introduction to Statistical Learning with applications in R" [@james2021]. It serves as the foundation for many other methods.
+
+    -   Techniques such as cross-validation are already frequently used to assess prediction quality and select models.
+
+-   Future?
+
+    -   Can the sample size rules of thumb suggested for sizing studies for hypothesis testing also be used to help size a study for prediction?
+
+    -   This is the main goal of this research.
+
+# Background and literature review for sample size determinations
+
+## Overview
+
+-   Researchers often use sample size calculations related to a power analysis as guidelines for sizing their studies.
+
+-   Another popular type of recommendations for sample size comes from conventional rules of thumb (RoT).
+
+## Standard power analyses
+
+-   Formal sample size calculations are performed using an appropriate distribution, such as the non-central t or F distributions.
+
+-   Theoretical results for the minimum sample size $n$ that achieves some power can be found for the simplest case: $H_0: \beta_1 = 0$ vs $H_1: \beta_1 \ne 0$.
+
+-   Probability calculations involve a non-centrality parameter (ncp) $\lambda$, which represents the effect size.
+
+![http://www.psychology.emory.edu](images/power.png)
+
+## Standard power analyses
+
+-   Hard to generalize to $p$ predictors.
+
+    -   It is easy to think about effect size for single predictor, but harder for $p$ predictors.
+
+    -   Explicit solutions become very hard, if not impossible to obtain.
+
+-   Why is effect size so important?
+
+    -   When the true (unknown) $\rho^2$ is small, if the anticipated is even slightly off, there can be major disparity regarding sample size recommendation [@knofczynski2007].
+
+-   So, researchers often search for other ways to help size their study.
+
+## Overview of prediction based sample size recommendations
+
+-   Less developed in literature.
+
+    -   Relative to the amount and diversity of literature for power-based methods, sample size determination where the main goal is prediction is nowhere near as comprehensive.
+
+-   Consistent general findings.
+
+    -   $N_{\text{prediction}} \gg N_{\text{power}}$ [@maxwell2000].
+
+    -   Adequate power $\nRightarrow$ generalizability.
+
+## Two methods
+
+- Population model similarity
+
+    -   @knofczynski2007 provided guidelines for $N$s that yield "sample regression models that predict similarly to the population regression model".
+
+    -   "Similar" was defined as a strong enough correlation between $\hat{Y}_{\text{pop}} = X \beta$ and $\hat{Y}_{\text{sample}} = X \hat{\beta}$ (i.e. $r$ \> 0.92 or 0.98) .
+
+    -   Results showed that populations with smaller correlations between the $Y$ and $\mathbf{X}$ requires larger sample sizes for good predictions.
+
+- The PEAR method
+
+    -   @barcikowski2012 proposed the Precision Efficacy Analysis for Regression (PEAR) method.
+    
+    -   Primary goal was to make sure that sample regression models are generalizable to future samples.
+    
+    -   Strategy was to limit the amount of cross-validity shrinkage $\epsilon = R^2 - R_C^2$ by .
+    
+    <!-- -   $R^2_C$ is a measure of the effectiveness of a sample regression model when applied to other samples [@herzberg]. -->
+
+    <!-- -   This quantity $\epsilon$ can be interpreted as "the difference between a regression model's apparent validity, as measured by $R^2$, and its actual predictive cross-validity" [@darlington1990]. -->
+    
+    -   Most recent results suggest that the PEAR method is effective for providing regression coefficients with smaller standard errors (i.e. more stable estimates of coefficients).
+
+# Methods
+
+## Overview
+
+-   The goal of this paper is to study sample size recommendations for prediction in MLR.
+
+-   This is investigated using a simulation experiment where 5-fold cross validation was implemented to measure the out-of-sample prediction performance of models based on various sample sizes.
+
+- This strategy more closely resembles what is done in practice, where a single sample needs to be used for both training and testing, rather than two distinct samples.
+
+-   Models were fit in the context of observational studies.
+
+## Conditions studied and data simulation process {.smaller}
+
+- The main factor of interest for the simulation described next was the sample sizes used for the 5-fold cross validation procedure.
+
+![Rules of thumb for multiple regression](images/sample-size-rot.png)
+
+- Three population characteristics were manipulated to cover a wide range of validating scenarios.
+
+    - The total number of predictors $p = 3, 6, 9$.
+    
+    - The proportion of active predictors relative to $p$, so-called $q$-ratio = 1/3, 2/3 and 3/3.
+    
+    - The degree of multicollinearity between the $X$s. Without loss of generality, correlation matrices were used when specifying the variance-covariance parameter $\Sigma_X$ of the multivariate normal distribution used to generate the design matrix. The levels were defined as follows: $\rho_{XX} \sim \text{Uniform}$ with the corresponding bounds (ind = 0, low = $(0, 0,2]$, medium-low = $[0.2, 0.4]$, medium = $[0.4, 0.6]$).
+    
+- In total, all possible combinations of the sample sizes, number of predictors, number of active predictors, and degree of multicollinearity defined a set of 36 unique validation scenarios for each sample size $n$ ($(p \times q\text{-ratio} \times \rho_{XX}) = (3 \times 3 \times 4) = 36$).
+
+## Conditions studied and data simulation process
+
+- All of the previous can be summarized with the following population model:
+
+$$Y_i = \beta_1 X_1 + \cdots + \beta_p X_p + \epsilon_i$$ {#eq-pop-model}
+
+where $X \sim \text{MVN}_p(\mu_X = \boldsymbol{0}, \rho_{XX})$, $\beta_j = 0.2$ ($j = 1, \ldots, q$) remaining $\beta_j = 0$ ($j = q+1, \ldots, p$), and $\epsilon_i \overset{iid}\sim \text{N}(0, \sigma^2 = 1)$.
+
+## Predictions evaluated
+
+- During the cross-validation procedure, each model was trained, and predictions were made on the holdout set of observations.
+
+- Two measures were used:
+
+$$\text{RMSE} = \bigg[\frac{1}{n_{\text{test}}} \sum^{n_{\text{test}}}_{i = 1} (y_{\text{new, }i} - \hat{y}_{\text{new, }i})^2\bigg]^{1/2}$$ {#eq-rmse}
+
+$$R^2_{\text{test}} = \text{Cor}(y_{\text{new}}, \hat{y}_{\text{new}})^2$$ {#eq-oos-r2}
+
+## Implementation details {.smaller}
+
+- Below are the steps used to conduct the Monte Carlo simulation within R; this outlined procedure was performed for each iteration of the simulation (in total, 500 iterations were run for each scenario).
+
+- Step 1) Get sample of data.
+
+    a.  For a particular number of predictors $p$ and level of multicollinearity, generate the correlation matrix.
+
+    b.  Once a proper matrix is obtained, simulate $n$ observations for $X$ utilizing $\rho_{XX}$.
+
+    c.  Set coefficients for $q$ active predictors to a constant, arbitrarily chosen value of $\beta_j = 0.2, \hspace{10pt} j = 1, \dots, q$ and non active predictor coefficients to zero $\beta_j = 0, \hspace{10pt} j = q + 1, \dots, p$. Then simulate the response variable $Y$ for each of the $n$ observations according to the population model in @eq-pop-model.
+
+- Step 2) Perform 5-fold cross validation.
+
+    a.  Partition sample data from step 1 into 5 groups (aka folds).
+
+    b.  Fit a sample MLR model using only data from four of the folds (e.g. folds 1 - 4).
+
+    c.  Using the regression equation from the above model, obtain the predicted values for observations in the fold that was held out (in this example, fold 5).
+
+    d.  Calculate the two accuracy measures described in @eq-rmse and @eq-oos-r2.
+
+e.  Repeat steps b - d until each fold has been used as the testing set exactly once.
+
+f.  Average the accuracy measures over the 5 folds.
+
+- Step 3) Go through each scenario.
+
+    -   Repeat steps 1 -- 2, each time using a different combination of the manipulated factors (i.e. number of predictors, number of active predictors, degree of multicollinearity and sample size). In other words, cycle through all of the 36 validation scenarios for each sample size. All of the calculated accuracy measures from this process make up the results for a single iteration of the simulation.
+
+- Once the entire simulation procedure was complete (steps 1 -- 3, for each iteration), accuracy measures were summarized over the 500 iterations, within each unique scenario.
+
+# Simulation
+
+## Demo simulation structure
+
+```{r}
+#| include: false
+
+### ---- Load packages ----
+
+library(tidyverse)
+library(magrittr)
+library(tidymodels)
+library(kableExtra)
+
+### ----- Define functions ----
+
+# define function to generate correlation matrix of Xs
+make_corr_x <- function(mc = c("ind", "low", "med-low", "med"), p = 2) {
+  
+  # fill in upper triangle off diagonals of the correlation matrix
+  rho_xx = matrix(data = rep(NA, p^2), ncol = p)
+  for(i in 1:(p-1)) {
+    for (j in (i+1):p) {
+
+      # conditionally generate pairwise correlation coefficient
+      rho_xx[i,j] = 
+        
+        if (identical(mc, "ind")){
+          
+          rep(0, 1)
+          
+        }else if (identical(mc, "low")){
+          
+          runif(n = 1, min = 0, max = 0.2)
+          
+        }else if (identical(mc, "med-low")){
+          
+          runif(n = 1, min = 0.2, max = 0.4)
+          
+        }else if (identical(mc, "med")){
+          
+          runif(n = 1, min = 0.4, max = 0.6)
+          
+        }
+    }
+  }
+  
+  # set diagonals of correlation matrix
+  diag(rho_xx) = 1
+  
+  # fill in lower triangle to be symmetric
+  rho_xx = Matrix::forceSymmetric(rho_xx)
+  
+  return(as.matrix(rho_xx))
+   
+}
+
+# define function to simulate response and covariates
+make_sim_data <- function(n = 100, p = 20, q = 10, b = 0.2, sigma = 1, mc = c("ind", "low", "med-low", "med")){
+  
+  # set multicollinearity level
+  mc = match.arg(mc)
+  
+  # generate X correlation matrix
+  rho_xx = make_corr_x(mc, p)
+  
+  # generate covariates
+  X = MASS::mvrnorm(n = n, mu = rep(0, p), Sigma = rho_xx)
+  
+  # give column names
+  colnames(X) = paste0("x", 1:p)
+  
+  # generate beta vector (q significant, non-zero parameters and p-q zeros)
+  beta = c(rep(b, q), rep(0, p-q))
+  
+  # calculate response
+  y = X %*% beta + rnorm(n, mean = 0, sd = sigma)
+  
+  # save as dataframe
+  data_sim = data.frame(y,X)
+  
+  return(data_sim)
+  
+}
+
+# function to:
+# 1) fit model on analysis data
+# 2) make predictions on holdout data
+# ... will be the model formula
+holdout_results <- function(splits, ...) {
+  
+  # fit the model to the analysis data (k-1 folds)
+  mod_kfold = lm(..., data = rsample::analysis(splits))
+  
+  # save the holdout data (last fold)
+  data_holdout = rsample::assessment(splits)
+  
+  # `augment` will save the predictions with the holdout data set
+  preds = augment(mod_kfold, newdata = data_holdout)
+  
+  return(preds)
+  
+}
+
+```
+
+```{r}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: 1-28|5-10|17-23
+
+### ---- Setup simulation structure ----
+
+# NOTE: demo is for only 2 iterations and fewer sample sizes
+
+# initialize simulation settings with repeated iterations
+params_i <- expand.grid(n = seq(from = 30, to = 60, by = 10),
+                        p = c(3, 6, 9),
+                        q_ratio = c("1/3", "2/3", "3/3"),
+                        mc = c("ind", "low", "med-low", "med"),
+                        i = 1:2) %>% 
+  data.frame %>% 
+  group_by(n, p, q_ratio, mc) %>% 
+  mutate(sim_id = cur_group_id()) %>% 
+  ungroup %>% 
+  arrange(sim_id, i)
+
+# calculate specifics and organize
+params_i %<>% mutate(
+  q = case_when(
+    q_ratio == "1/3" ~ p/3,
+    q_ratio == "2/3" ~ 2*p/3,
+    q_ratio == "3/3" ~ p
+  ),
+  mc = as.character(mc) # needed for match.args()
+) %>% 
+  select(sim_id, i, n, p, q_ratio, q, mc)
+
+params_i %>% head(n = 10) %>% kable
+
+```
+
+```{r}
+#| echo: true
+#| output-location: column
+
+# nest simulation settings into dataframe
+simulation <- params_i %>% 
+  nest(.by = c(sim_id, i)) %>% 
+  rename(params = data)
+simulation %>% head(n = 10)
+
+```
+
+## Generate and split data
+
+```{r}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: 1-13|6|11
+
+### ---- Generate and split data ----
+
+# generate data according to each simulation setting
+# -> specify constant values in simulation (non-variable settings)
+simulation$data <- simulation$params %>% map(function(params) {
+  params %$% make_sim_data(n, p, q, mc, b = 0.2, sigma = 1)
+})
+
+# split each dataset into 5 folds
+simulation$kfolds <- simulation$data %>% 
+  map(\(df) rsample::vfold_cv(df, v = 5, repeats = 1))
+
+simulation %>% head(n = 10)
+
+```
+
+```{r}
+#| echo: true
+#| output-location: column
+
+simulation$data[1] %>% head(n = 10)
+
+```
+
+## Run simulation
+
+```{r}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: 1-27|10|12-16|18-23
+
+### ---- Run simulation ----
+
+# loop through each iteration to work on each set of kfolds
+for (j in 1:nrow(simulation)) {
+  
+  # extract resample dataframe
+  kfolds = simulation[j, "kfolds"]$kfolds[[1]]
+  
+  # fit models for k-fold cross-validation with UDF
+  preds = kfolds$splits %>% map(\(split) holdout_results(split, formula(y ~ -1 + .)))
+  
+  # calculate predictions for each fold
+  results = preds %>% map(function(df) {
+    data.frame(rmse = yardstick::rmse_vec(truth = df$y,estimate = df$`.fitted`),
+               rsq = yardstick::rsq_vec(truth = df$y, estimate = df$`.fitted`))
+  })
+  
+  # summarize cross-validation results
+  simulation[j, "results_cv"] <- nest(
+    results %>% 
+    bind_rows %>% 
+    summarize(across(everything(), mean))
+  )
+  
+}
+
+simulation %>% select(-c(params, data, kfolds)) %>% head(n = 10)
+
+```
+
+```{r}
+#| echo: true
+#| output-location: column
+
+simulation$results_cv[1]
+
+```
+
+# Results and conclusions
+
+## Summarize results
+
+```{r}
+#| echo: true
+#| output-location: column
+#| code-line-numbers: 1-9|7-8
+
+### ---- Summarize results ----
+
+# create results dataframe
+results <- simulation %>% 
+  select(sim_id, i, params, results_cv) %>% 
+  unnest(cols = c(params, results_cv)) %>% 
+  summarize(.by = c(sim_id, n, p, q_ratio, q, mc),
+            across(c(rmse, rsq), list(mean = mean, sd = sd)))
+results %>% head(n = 10) %>% kable
+
+```
+
+## Actual results
+
+- The results in the following figures are based on the mean of the respective accuracy measures over the 500 iterations.
+
+> ### RMSE
+
+![Plots of RMSE by sample size when all predictors are active (q-ratio = 3/3) with sample size rules of thumb overlaid](images/plot-rmse-focused-annotated.png){width=40%}
+
+## Actual results
+
+> ### RMSE
+
+![Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid](images/fig-all-rmse.png)
+
+## Actual results
+
+> ### $R^2_{\text{Test}}$
+
+![Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid](images/fig-r2-focused.png)
+
+## Conclusions
+
+- Overall, when quantifying quality of predictions with $RMSE$, results showed only small changes when increasing the sample size from 30 to 300.
+
+    - This may be because certain aspects aspects of the simulation process with MLR models were left uncontrolled like some measure of effect size between $Y$ and the set of $X$s.  
+
+- Based on the implemented scenarios of this simulation, larger sample sizes did not see enough of a benefit in accuracy (i.e. smaller $RMSE$) to warrant the large increases in $n$.
+
+    - Thus, by default preference would be given to RoT that recommend smaller sample sizes when the goal of a MLR study is to have accurate predictions.
+
+- Lastly, due to the suspicious pattern, nothing can be gleaned from the results when using out-of-sample $R^2$ as the measure of predictive accuracy.
+
+## References {.unnumbered}
+
+::: {#refs}
+:::

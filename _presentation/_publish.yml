@@ -1,0 +1,4 @@
+- source: presentation.qmd
+  quarto-pub:
+    - id: 07da98ee-ae3e-4cb2-a3f4-7aad0a4193d8
+      url: 'https://coltongearhart.quarto.pub/masters-project'
