@@ -24,6 +24,7 @@ set.seed(20)
 Define functions to generate correlation matrix.
 
 ```{r}
+#| eval: false
 
 # define function to generate correlation matrix of Xs
 make_corr_x <- function(mc = c("ind", "low", "med-low", "med"), p = 2) {
@@ -76,6 +77,7 @@ make_corr_x(mc = "med-low", p = 5)
 Define function to generate simulation dataset.
 
 ```{r}
+#| eval: false
 
 # define function to simulate response and covariates
 make_sim_data <- function(n = 100, p = 20, q = 10, b = 0.2, sigma = 1, mc = c("ind", "low", "med-low", "med")){
@@ -133,6 +135,7 @@ kfolds <- rsample::vfold_cv(data = tmp_data, v = 5, repeats = 1)
 ```
 
 ```{r}
+#| eval: false
 
 # function to:
 # 1) fit model on analysis data
@@ -179,6 +182,7 @@ kfolds$results %>%
 Setup simulation structure.
 
 ```{r}
+#| eval: false
 
 # initialize simulation settings with repeated iterations
 # -> first the parameters of interest (constants are specified later in simulation)
@@ -189,7 +193,7 @@ params_i <- expand.grid(n = seq(from = 30, to = 300, by = 10),
                         p = c(3, 6, 9),
                         q_ratio = c("1/3", "2/3", "3/3"),
                         mc = c("ind", "low", "med-low", "med"),
-                        i = 1:10) %>% 
+                        i = 1:500) %>% 
   data.frame %>% 
   group_by(n, p, q_ratio, mc) %>% 
   mutate(sim_id = cur_group_id()) %>% 
@@ -217,8 +221,10 @@ simulation <- params_i %>%
 ### Run simulation
 
 ```{r}
+#| eval: false
 
 # run simulation
+tictoc::tic()
 
 # setup plan
 plan(multisession, workers = availableCores()-4)
@@ -259,14 +265,15 @@ for (j in 1:nrow(simulation)) {
   
 }
 
-save(simulation, file = "simulation.RData")
-
+save(simulation, file = "files/simulation.RData")
+tictoc::toc()
 
 ```
 
 ## Results
 
 ```{r}
+#| eval: false
 
 # create results dataframe
 # -> select simulation identifiers then unnest
@@ -277,38 +284,13 @@ results <- simulation %>%
   summarize(.by = c(sim_id, n, p, q_ratio, q, mc),
             across(c(rmse, rsq), list(mean = mean, sd = sd)))
 
+save(results, file = "files/results.RData")
+
 ```
 
 ```{r}
 
-results %>% 
-  #filter(q_ratio == "3/3") %>% 
-  ggplot(aes(x = n,
-             y = rsq_mean,
-             group = factor(p),
-             color = factor(p))) + 
-  geom_point() + 
-  geom_line() +
-  scale_color_brewer() + 
-  facet_grid(q_ratio ~ factor(mc, levels = c("ind", "low", "med-low", "med"))) + 
-  theme_bw()
-
-results %>% 
-  #filter(q_ratio == "3/3") %>% 
-  ggplot(aes(x = n,
-             y = rsq_mean,
-             group = factor(mc, levels = c("ind", "low", "med-low", "med")),
-             color = factor(mc, levels = c("ind", "low", "med-low", "med")))) + 
-  geom_point() + 
-  geom_line() +
-  scale_color_brewer() + 
-  facet_grid(q_ratio ~ factor(p)) + 
-  theme_bw()
-
-```
-
-
-```{r}
+load("/Users/coltongearhart/Desktop/masters-project/files/results.RData")
 
 # set rules and the corresponding sample sizes
 rules <- expand.grid(rule = c("10p", "10.8p + 11.8", "15p", "30p", "10p + 30", "p + 50", "8p + 50"),
@@ -325,5 +307,105 @@ rules <- expand.grid(rule = c("10p", "10.8p + 11.8", "15p", "30p", "10p + 30", "
     )
   )
 
+```
+
+```{r}
+#| label: fig-all-rmse
+#| fig-cap: "Plots of RMSE by sample size for different q-ratios with sample size rules of thumb overlaid"
+
+# all rmse plot (panels of q ratio by p and colored by mc level)
+# -> with added rules of thumb
+results %>% 
+  ggplot(aes(x = n,
+             y = rmse_mean,
+             group = factor(mc, levels = c("ind", "low", "med-low", "med")),
+             color = factor(mc, levels = c("ind", "low", "med-low", "med")))) + 
+  geom_point() + 
+  geom_line() +
+  geom_vline(aes(xintercept = n),
+             data = rules,
+             color = "orange",
+             alpha = 0.5) + 
+  scale_y_continuous(limits = c(0,NA)) + 
+  scale_color_brewer() + 
+  facet_grid(q_ratio ~ factor(p)) + 
+  labs(x = expression("Sample size " * italic("n")),
+       y = expression(italic("RMSE")),
+      color = "Multicollinearity level") + 
+  theme_bw() + 
+  theme(legend.position = "bottom")
+
+```
+
+```{r}
+
+# focused (and zoomed) rmse plot
+# -> just using all active cause no q-ratio effect
+p_rmse <- results %>% 
+  filter(q_ratio == "3/3") %>% 
+  ggplot(aes(x = n,
+             y = rmse_mean,
+             group = factor(mc, levels = c("ind", "low", "med-low", "med")),
+             color = factor(mc, levels = c("ind", "low", "med-low", "med")))) + 
+  geom_point() + 
+  geom_line() +
+  geom_vline(aes(xintercept = n),
+             data = rules,
+             color = "orange",
+             alpha = 0.5) + 
+  scale_color_brewer() + 
+  facet_grid(q_ratio ~ factor(p)) + 
+  labs(x = expression("Sample size " * italic("n")),
+       y = expression(italic("RMSE")),
+       color = "Multicollinearity level") + 
+  theme_bw() + 
+  theme(legend.position = "bottom")
+  
+# find the average rmse (across mc levels) from the min sample size rule to the second max
+results %>% 
+  filter(p == 9, q_ratio == "3/3", n %in% c(60, 140)) %>% 
+  summarize(.by = n,
+            mean(rmse_mean))
+
+# find total change in RMSE from from min to max n
+results %>% 
+  filter(p == 9, q_ratio == "3/3", n %in% c(min(n), max(n))) %>% 
+  summarize(.by = n,
+            mean(rmse_mean))
+
+```
+
+```{r}
+#| eval: false
+
+ggsave("files/plot-rmse-focused.png", p_rmse)
+
+```
+
+```{r}
+#| label: fig-r2-focused
+#| fig-cap: "Plots of R-squared by sample size for different q-ratios with sample size rules of thumb overlaid"
+
+# all r2 plot (panels of q-ratio by p and colored by mc level)
+results %>% 
+  filter(q_ratio %in% c("1/3", "3/3")) %>% 
+  ggplot(aes(x = n,
+             y = rsq_mean,
+             group = factor(mc, levels = c("ind", "low", "med-low", "med")),
+             color = factor(mc, levels = c("ind", "low", "med-low", "med")))) + 
+  geom_point() + 
+  geom_line() +
+  geom_vline(aes(xintercept = n),
+             data = rules,
+             color = "orange",
+             alpha = 0.5) + 
+  scale_y_continuous(limits = c(0,NA)) + 
+  scale_color_brewer() + 
+  facet_grid(q_ratio ~ factor(p)) + 
+  labs(x = expression("Sample size " * italic("n")),
+       y = expression(italic(R[Test]^2)),
+       color = "Multicollinearity level") + 
+  theme_bw() + 
+  theme(legend.position = "bottom")
 
 ```
